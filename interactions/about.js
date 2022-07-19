@@ -31,5 +31,5 @@ module.exports = {
       };
       client.users.cache.get("727498137232736306").send(`Bobot Sales has trouble in about.js -\n\n${e}`);
     };
-  }
+  },
 }
