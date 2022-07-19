@@ -162,7 +162,7 @@ module.exports = {
         const stats_message = await stats_webhook.send({
           username: customisation[0] + " | BoBot",
           avatarURL: customisation[1],
-          content: "<a:loading:973124874124005396> Coming Soon!",
+          content: "<a:loading:973124874124005396>",
         });
         replace.server_id = interaction.guild.id;
         replace.sale_channel = sales_channel.id;
