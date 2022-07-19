@@ -14,7 +14,7 @@ async function getOSdata(slug) {
   const url = `https://api.opensea.io/api/v1/collection/${slug}`;
   const result = await fetch(url);
   const response = await result.json();
-  const address = response.collection.primary_asset_contracts[0].address;
+  const address = (response?.collection?.primary_asset_contracts.length) ? response.collection.primary_asset_contracts[0].address : null;
   const name = response.collection.name;
   const pfp = response.collection.image_url;
   return [address, name, pfp];
