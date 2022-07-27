@@ -1,4 +1,4 @@
-const { MessageSelectMenu, MessageActionRow, Permissions } = require("discord.js");
+const { SelectMenuBuilder, ActionRowBuilder, PermissionsBitField, ComponentType, ChannelType } = require("discord.js");
 const config_records = require('../models/configurations');
 const { RateLimiter } = require("limiter");
 const limiter_OS = new RateLimiter({
@@ -25,15 +25,15 @@ module.exports = {
     try {
       if (interaction.inGuild()) {
         const guild = client.guilds.cache.get(interaction.guildId);
-        const permissions = guild.me.permissions;
-        if (!permissions.has(Permissions.FLAGS.MANAGE_ROLES)) return interaction.reply({ content: `I do not have the \`MANAGE_ROLES\` permission . Please grant me the permission before using this command.`, ephemeral: true });
-        if (!permissions.has(Permissions.FLAGS.MANAGE_WEBHOOKS)) return interaction.reply({ content: `I do not have the \`MANAGE_WEBHOOKS\` permission . Please grant me the permission before using this command.`, ephemeral: true });
-        if (!permissions.has(Permissions.FLAGS.MANAGE_CHANNELS)) return interaction.reply({ content: `I do not have the \`MANAGE_CHANNELS\` permission . Please grant me the permission before using this command.`, ephemeral: true });
-        if (!permissions.has(Permissions.FLAGS.USE_EXTERNAL_EMOJIS)) return interaction.reply({ content: `I do not have the \`USE_EXTERNAL_EMOJIS\` permission . Please grant me the permission before using this command.`, ephemeral: true });
-        if (!permissions.has(Permissions.FLAGS.SEND_MESSAGES)) return interaction.reply({ content: `I do not have the \`SEND_MESSAGES\` permission . Please grant me the permission before using this command.`, ephemeral: true });
+        const permissions = guild.members.me.permissions;
+        if (!permissions.has(PermissionsBitField.FLAGS.ManageRoles)) return interaction.reply({ content: `I do not have the \`MANAGE_ROLES\` permission . Please grant me the permission before using this command.`, ephemeral: true });
+        if (!permissions.has(PermissionsBitField.FLAGS.ManageWebhooks)) return interaction.reply({ content: `I do not have the \`MANAGE_WEBHOOKS\` permission . Please grant me the permission before using this command.`, ephemeral: true });
+        if (!permissions.has(PermissionsBitField.FLAGS.ManageChannels)) return interaction.reply({ content: `I do not have the \`MANAGE_CHANNELS\` permission . Please grant me the permission before using this command.`, ephemeral: true });
+        if (!permissions.has(PermissionsBitField.FLAGS.UseExternalEmojis)) return interaction.reply({ content: `I do not have the \`USE_EXTERNAL_EMOJIS\` permission . Please grant me the permission before using this command.`, ephemeral: true });
+        if (!permissions.has(PermissionsBitField.FLAGS.SendMessages)) return interaction.reply({ content: `I do not have the \`SEND_MESSAGES\` permission . Please grant me the permission before using this command.`, ephemeral: true });
       };
       await interaction.deferReply({ ephemeral: true });
-      if (!interaction.memberPermissions?.has("ADMINISTRATOR") && !interaction.memberPermissions?.has("MANAGE_GUILD") && interaction.user.id !== interaction.guild?.ownerId) return interaction.editReply({
+      if (!interaction.memberPermissions?.has(PermissionsBitField.FLAGS.Administrator) && !interaction.memberPermissions?.has(PermissionsBitField.FLAGS.ManageGuild) && interaction.user.id !== interaction.guild?.ownerId) return interaction.editReply({
         content: "This command can only be used by you in a Discord Server where either of the following apply :\n1) You are the Owner of the Discord Server.\n2) You have the **ADMINISTRATOR** permission in the server.\n3) You have the **MANAGE SERVER** permission in the server.",
         ephemeral: true,
       });
@@ -69,9 +69,9 @@ module.exports = {
         magiceden_symbol = ME_link.slice(ME_link.lastIndexOf("/") + 1);
       };
       const filter = (interaction) => interaction.customId === 'subs' && interaction.user.id === userid;
-      const row = new MessageActionRow()
+      const row = new ActionRowBuilder()
         .addComponents(
-          new MessageSelectMenu()
+          new SelectMenuBuilder()
             .setCustomId('subs')
             .setPlaceholder('Tap to Choose Subscription')
             .setMinValues(1)
@@ -89,7 +89,7 @@ module.exports = {
         fetchReply: true,
       });
       let chosen;
-      const collector = reply.createMessageComponentCollector({ filter, componentType: 'SELECT_MENU', time: 1000 * 60 * 60 * 24 });
+      const collector = reply.createMessageComponentCollector({ filter, componentType: ComponentType.SelectMenu, time: 1000 * 60 * 60 * 24 });
       collector.on('collect', async (i) => {
         await i.deferUpdate();
         if (i.user.id !== userid) return i.reply({ content: `This menu is not for you.`, ephemeral: true });
@@ -99,63 +99,73 @@ module.exports = {
           discord_id: interaction.user.id,
           number: chosen,
         });
-        const category = await interaction.guild.channels.create("🛒 BoBot Sales 🛒", {
-          type: "GUILD_CATEGORY"
+        const category = await interaction.guild.channels.create({
+          name: "🛒 BoBot Sales 🛒", 
+          type: ChannelType.GuildCategory
         });
-        const stats_channel = await category.createChannel("📈︱stats", {
+        const stats_channel = await interaction.guild.channels.create({
+          name:"📈︱stats", 
+          parent: category,
           topic: "Stats channel Managed by BoBot Sales Bot : https://discord.gg/HweZtrzAnX",
           permissionOverwrites: [
             {
               id: client.user.id,
-              allow: [Permissions.FLAGS.VIEW_CHANNEL, Permissions.FLAGS.SEND_MESSAGES, Permissions.FLAGS.EMBED_LINKS],
+              allow: [PermissionsBitField.FLAGS.ViewChannel, PermissionsBitField.FLAGS.SendMessages, PermissionsBitField.FLAGS.EmbedLinks],
             }, {
               id: interaction.guild.id,
-              deny: [Permissions.FLAGS.VIEW_CHANNEL],
+              deny: [PermissionsBitField.FLAGS.ViewChannel],
             }
           ],
         });
-        const sales_channel = await category.createChannel("📈︱sales", {
+        const sales_channel = await interaction.guild.channels.create({
+          name:"📈︱sales", 
           topic: "Sales channel Managed by BoBot Sales Bot : https://discord.gg/HweZtrzAnX",
+          parent: category,
           permissionOverwrites: [
             {
               id: client.user.id,
-              allow: [Permissions.FLAGS.VIEW_CHANNEL, Permissions.FLAGS.SEND_MESSAGES, Permissions.FLAGS.EMBED_LINKS],
+              allow: [PermissionsBitField.FLAGS.ViewChannel, PermissionsBitField.FLAGS.SendMessages, PermissionsBitField.FLAGS.EmbedLinks],
             }, {
               id: interaction.guild.id,
-              deny: [Permissions.FLAGS.VIEW_CHANNEL],
+              deny: [PermissionsBitField.FLAGS.ViewChannel],
             }
           ],
         });
-        const listings_channel = await category.createChannel("📈︱listings", {
+        const listings_channel = await interaction.guild.channels.create({
+          name:"📈︱listings", 
+          parent: category,
           topic: "Listings Channel Managed by BoBot Sales Bot : https://discord.gg/HweZtrzAnX",
           permissionOverwrites: [
             {
               id: client.user.id,
-              allow: [Permissions.FLAGS.VIEW_CHANNEL, Permissions.FLAGS.SEND_MESSAGES, Permissions.FLAGS.EMBED_LINKS],
+              allow: [PermissionsBitField.FLAGS.ViewChannel, PermissionsBitField.FLAGS.SendMessages, PermissionsBitField.FLAGS.EmbedLinks],
             }, {
               id: interaction.guild.id,
-              deny: [Permissions.FLAGS.VIEW_CHANNEL],
+              deny: [PermissionsBitField.FLAGS.ViewChannel],
             }
           ],
         });
         if (role.id === interaction.guild.id) {
-          await stats_channel.permissionOverwrites.edit(interaction.guild.id, { VIEW_CHANNEL: true, SEND_MESSAGES: false, READ_MESSAGE_HISTORY: true, ADD_REACTIONS: true, USE_EXTERNAL_EMOJIS: true });
-          await sales_channel.permissionOverwrites.edit(interaction.guild.id, { VIEW_CHANNEL: true, SEND_MESSAGES: false, READ_MESSAGE_HISTORY: true, ADD_REACTIONS: true, USE_EXTERNAL_EMOJIS: true });
-          await listings_channel.permissionOverwrites.edit(interaction.guild.id, { VIEW_CHANNEL: true, SEND_MESSAGES: false, READ_MESSAGE_HISTORY: true, ADD_REACTIONS: true, USE_EXTERNAL_EMOJIS: true });
+          await stats_channel.permissionOverwrites.edit(interaction.guild.id, { ViewChannel: true, SendMessages: false, ReadMessageHistory: true, AddReactions: true, UseExternalEmojis: true });
+          await sales_channel.permissionOverwrites.edit(interaction.guild.id, { ViewChannel: true, SendMessages: false, ReadMessageHistory: true, AddReactions: true, UseExternalEmojis: true });
+          await listings_channel.permissionOverwrites.edit(interaction.guild.id, { ViewChannel: true, SendMessages: false, ReadMessageHistory: true, AddReactions: true, UseExternalEmojis: true });
         } else {
-          await stats_channel.permissionOverwrites.create(role.id, { VIEW_CHANNEL: true, SEND_MESSAGES: false, READ_MESSAGE_HISTORY: true, ADD_REACTIONS: true, USE_EXTERNAL_EMOJIS: true });
-          await sales_channel.permissionOverwrites.create(role.id, { VIEW_CHANNEL: true, SEND_MESSAGES: false, READ_MESSAGE_HISTORY: true, ADD_REACTIONS: true, USE_EXTERNAL_EMOJIS: true });
-          await listings_channel.permissionOverwrites.create(role.id, { VIEW_CHANNEL: true, SEND_MESSAGES: false, READ_MESSAGE_HISTORY: true, ADD_REACTIONS: true, USE_EXTERNAL_EMOJIS: true });
+          await stats_channel.permissionOverwrites.create(role.id, { ViewChannel: true, SendMessages: false, ReadMessageHistory: true, AddReactions: true, UseExternalEmojis: true });
+          await sales_channel.permissionOverwrites.create(role.id, { ViewChannel: true, SendMessages: false, ReadMessageHistory: true, AddReactions: true, UseExternalEmojis: true });
+          await listings_channel.permissionOverwrites.create(role.id, { ViewChannel: true, SendMessages: false, ReadMessageHistory: true, AddReactions: true, UseExternalEmojis: true });
         };
-        const sales_webhook = await sales_channel.createWebhook('BoBot Sales S', {
+        const sales_webhook = await sales_channel.createWebhook({
+          name:'BoBot Sales S',
           avatar: "https://media.discordapp.net/attachments/797163839765741568/988519804472287332/sales.jpg",
           reason: "This webhook was created by BoBot Sales Bot to post sales.",
         });
-        const listings_webhook = await listings_channel.createWebhook('BoBot Sales L', {
+        const listings_webhook = await listings_channel.createWebhook({
+          name:'BoBot Sales L', 
           avatar: "https://media.discordapp.net/attachments/797163839765741568/988519804472287332/sales.jpg",
           reason: "This webhook was created by BoBot Sales Bot to post listings.",
         });
-        const stats_webhook = await stats_channel.createWebhook('BoBot Sales Stats', {
+        const stats_webhook = await stats_channel.createWebhook({
+          name:'BoBot Sales Stats',
           avatar: "https://media.discordapp.net/attachments/797163839765741568/988519804472287332/sales.jpg",
           reason: "This webhook was created by BoBot Sales Bot to post stats.",
         });

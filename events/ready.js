@@ -1,7 +1,7 @@
 const config_records = require('../models/configurations');
 const sub_records = require('../models/subscriptionRecords');
 const fs = require("fs");
-const { MessageEmbed } = require("discord.js");
+const { EmbedBuilder, ActivityType } = require("discord.js");
 const { WebSocket } = require('ws');
 const { OpenSeaStreamClient, EventType } = require('@opensea/stream-js');
 const fetch = require("node-fetch");
@@ -174,15 +174,15 @@ async function embedSalesOS(event, big) {
   const symbol = event.payload.payment_token.symbol;
   const price = Number(event.payload.sale_price) / (Math.pow(10, decimals));
   const priceUSD = (price * Number(event.payload.payment_token.usd_price)).toFixed(2);
-  let embed = new MessageEmbed()
+  let embed = new EmbedBuilder()
     .setTitle(name)
     .setURL(permalink)
     .setColor(color)
     .setDescription(`has just been **SOLD** for **${price} ${symbol}**\n( US$ ${priceUSD} ) on [Opensea](https://opensea.io 'click to open opensea') <:OpenSeaLogo:990321456263098398> !`)
-    .addFields(
+    .addFields([
       { name: "Sold By", value: `[${lister.slice(0, 5)}](https://opensea.io/${lister})`, inline: true },
       { name: "Bought by", value: buyer, inline: true },
-    )
+    ])
     .setTimestamp()
     .setFooter({ text: 'Powered by BoBot', iconURL: 'https://media.discordapp.net/attachments/797163839765741568/969482807678234725/unknown-1.png?width=452&height=452' });
   if (big) {
@@ -204,15 +204,15 @@ async function embedSalesME(event, slug, big) {
   } while (!nftMetadata || !nftMetadata?.image)
   const name = nftMetadata.name;
   const image = nftMetadata.image;
-  let embed = new MessageEmbed()
+  let embed = new EmbedBuilder()
     .setTitle(name)
     .setURL(`https://magiceden.io/item-details/${token}`)
     .setColor("#00FF00")
     .setDescription(`has just been **SOLD** for **${price} SOL**\n( US$ ${(price * solPrice).toFixed(2)} ) on [Magic Eden](https://magiceden.io 'click to open magic eden') <:magicEden:990321805665374278> !`)
-    .addFields(
+    .addFields([
       { name: "Sold By", value: `[${lister.slice(0, 5)}](https://magiceden.io/u/${lister})`, inline: true },
       { name: "Bought by", value: buyerString, inline: true },
-    )
+    ])
     .setTimestamp()
     .setFooter({ text: 'Powered by BoBot', iconURL: 'https://media.discordapp.net/attachments/797163839765741568/969482807678234725/unknown-1.png?width=452&height=452' });
   if (big) {
@@ -231,15 +231,15 @@ async function embedSalesLR(event, slug, big) {
   const buyer = await getBuyerStatusLR(event.to, slug);
   const price = Number(event.order.price) / Math.pow(10, 18);
   const priceUsd = (price * ethPrice).toFixed(2);
-  let embed = new MessageEmbed()
+  let embed = new EmbedBuilder()
     .setTitle(name)
     .setURL(url)
     .setColor(color)
     .setDescription(`has just been **SOLD** for **${price} ETH**\n( US$ ${priceUsd} ) on [Looksrare](https://looksrare.org 'click to open looksrare') <:looksblack:990321530510643340> !`)
-    .addFields(
+    .addFields([
       { name: "Sold By", value: `[${lister.slice(0, 5)}](https://looksrare.org/accounts/${lister})`, inline: true },
       { name: "Bought by", value: buyer, inline: true },
-    )
+    ])
     .setTimestamp()
     .setFooter({ text: 'Powered by BoBot', iconURL: 'https://media.discordapp.net/attachments/797163839765741568/969482807678234725/unknown-1.png?width=452&height=452' });
   if (big) {
@@ -260,15 +260,15 @@ async function embedSalesXY(event, slug, big) {
     metadata = await getOSKey(`https://api.opensea.io/api/v1/asset/${event.token.contract}/${event.token.token_id}/`);
   } while (!metadata || !metadata?.name)
   const url = `https://x2y2.io/eth/${event.token.contract}/${event.token.token_id}`;
-  let embed = new MessageEmbed()
+  let embed = new EmbedBuilder()
     .setTitle(metadata.name)
     .setURL(url)
     .setColor("#00FF00")
     .setDescription(`has just been **SOLD** for **${price} ETH**\n( US$ ${priceUsd} ) on [X2Y2 Marketplace](https://x2y2.io 'click to open x2y2 marketplace') <:x2y2:992453235610755092> !`)
-    .addFields(
+    .addFields([
       { name: "Sold By", value: `[${lister.slice(0, 5)}](https://x2y2.io/user/${lister}/items)`, inline: true },
       { name: "Bought by", value: buyer, inline: true },
-    )
+    ])
     .setTimestamp()
     .setFooter({ text: 'Powered by BoBot', iconURL: 'https://media.discordapp.net/attachments/797163839765741568/969482807678234725/unknown-1.png?width=452&height=452' });
   if (big) {
@@ -291,15 +291,15 @@ function embedListOS(event, big) {
   const symbol = event.payload.payment_token.symbol;
   const price = Number(event.payload.base_price) / (Math.pow(10, decimals));
   const priceUSD = (price * Number(event.payload.payment_token.usd_price)).toFixed(2);
-  let embed = new MessageEmbed()
+  let embed = new EmbedBuilder()
     .setTitle(name)
     .setURL(permalink)
     .setColor(color)
     .setDescription(`has just been **LISTED** for **${price} ${symbol}**\n( US$ ${priceUSD} ) on [Opensea](https://opensea.io 'click to open opensea') <:OpenSeaLogo:990321456263098398> !`)
-    .addFields(
+    .addFields([
       { name: "Listed By", value: `[${lister.slice(0, 5)}](https://opensea.io/${lister})`, inline: true },
       { name: "Expires on", value: `<t:${parseInt(expire_timestamp / 1000)}:F>`, inline: true },
-    )
+    ])
     .setTimestamp()
     .setFooter({ text: 'Powered by BoBot', iconURL: 'https://media.discordapp.net/attachments/797163839765741568/969482807678234725/unknown-1.png?width=452&height=452' });
   if (big) {
@@ -318,15 +318,15 @@ function embedListsLR(event, big) {
   const expire_timestamp = event.order.endTime;
   const price = Number(event.order.price) / Math.pow(10, 18);
   const priceUsd = (price * ethPrice).toFixed(2);
-  let embed = new MessageEmbed()
+  let embed = new EmbedBuilder()
     .setTitle(name)
     .setURL(url)
     .setColor(color)
     .setDescription(`has just been **LISTED** for **${price} ETH**\n( US$ ${priceUsd} ) on [Looksrare](https://looksrare.org 'click to open looksrare') <:looksblack:990321530510643340> !`)
-    .addFields(
+    .addFields([
       { name: "Listed By", value: `[${lister.slice(0, 5)}](https://looksrare.org/accounts/${lister})`, inline: true },
       { name: "Expires on", value: `<t:${expire_timestamp}:F>`, inline: true },
-    )
+    ])
     .setTimestamp()
     .setFooter({ text: 'Powered by BoBot', iconURL: 'https://media.discordapp.net/attachments/797163839765741568/969482807678234725/unknown-1.png?width=452&height=452' });
   if (big) {
@@ -347,15 +347,15 @@ async function embedListsXY(event, big) {
     metadata = await getOSKey(`https://api.opensea.io/api/v1/asset/${event.token.contract}/${event.token.token_id}/`);
   } while (!metadata || !metadata?.name)
   const url = `https://x2y2.io/eth/${event.token.contract}/${event.token.token_id}`;
-  let embed = new MessageEmbed()
+  let embed = new EmbedBuilder()
     .setTitle(metadata.name)
     .setURL(url)
     .setColor("#FF0000")
     .setDescription(`has just been **LISTED** for **${price} ETH**\n( US$ ${priceUsd} ) on [X2Y2 Marketplace](https://x2y2.io 'click to open x2y2 marketplace') <:x2y2:992453235610755092> !`)
-    .addFields(
+    .addFields([
       { name: "Listed By", value: `[${lister.slice(0, 5)}](https://x2y2.io/user/${lister}/items)`, inline: true },
       { name: "Expires on", value: `<t:${expires}:F>`, inline: true },
-    )
+    ])
     .setTimestamp()
     .setFooter({ text: 'Powered by BoBot', iconURL: 'https://media.discordapp.net/attachments/797163839765741568/969482807678234725/unknown-1.png?width=452&height=452' });
   if (big) {
@@ -375,14 +375,14 @@ async function embedListsME(event, big) {
   } while (!nftMetadata || !nftMetadata?.image)
   const name = nftMetadata.name;
   const image = nftMetadata.image;
-  let embed = new MessageEmbed()
+  let embed = new EmbedBuilder()
     .setTitle(name)
     .setURL(`https://magiceden.io/item-details/${token}`)
     .setColor("#FF0000")
     .setDescription(`has just been **LISTED** for **${price} SOL**\n( US$ ${(price * solPrice).toFixed(2)} ) on [Magic Eden](https://magiceden.io 'click to open magic eden') <:magicEden:990321805665374278> !`)
-    .addFields(
+    .addFields([
       { name: "Listed By", value: `[${seller.slice(0, 5)}](https://magiceden.io/u/${seller})`, inline: true },
-    )
+    ])
     .setTimestamp()
     .setFooter({ text: 'Powered by BoBot', iconURL: 'https://media.discordapp.net/attachments/797163839765741568/969482807678234725/unknown-1.png?width=452&height=452' });
   if (big) {
@@ -650,7 +650,7 @@ module.exports = {
     async function subFilter() {
       const subs = await sub_records.find();
       const subscriberCount = subs.length;
-      client.user.setActivity(`${subscriberCount} Collections !`, { type: 'WATCHING' });
+      client.user.setActivity(`${subscriberCount} Collections !`, { type: ActivityType.Watching });
       const subscribers = subs.map(e => e.discord_id);
       const members = await client.guilds.cache.get("969155191339384892").members.fetch();
       members.each((m) => {

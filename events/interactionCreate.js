@@ -1,5 +1,5 @@
-const Discord = require("discord.js");
-const cooldowns = new Discord.Collection();
+const { Collection , InteractionType } = require("discord.js");
+const cooldowns = new Collection();
 
 module.exports = {
   name: "interactionCreate",
@@ -7,14 +7,14 @@ module.exports = {
   async execute(client, interaction) {
     let Icommand = "";
     try {
-      if (interaction.isCommand()) {
+      if (interaction.type === InteractionType.ApplicationCommand) {
         Icommand = interaction.commandName;
       } else {
         return;
       };
       const command = client.interactions.get(Icommand);
       if (!cooldowns.has(command.name)) {
-        cooldowns.set(command.name, new Discord.Collection());
+        cooldowns.set(command.name, new Collection());
       };
       if (interaction.user.id !== '727498137232736306') {
         const now = Date.now();

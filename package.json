@@ -2,7 +2,7 @@
   "dependencies": {
     "@opensea/stream-js": "^0.0.20",
     "ascii-table": "^0.0.9",
-    "discord.js": "^13.8.1",
+    "discord.js": "^14.0.3",
     "dotenv": "^16.0.1",
     "fs": "^0.0.1-security",
     "limiter": "^2.1.0",

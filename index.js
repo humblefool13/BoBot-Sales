@@ -1,13 +1,9 @@
-const {
-  Client,
-  Collection,
-  Intents
-} = require('discord.js');
+const { Client, Collection, GatewayIntentBits } = require('discord.js');
 const fs = require('fs');
 require("dotenv").config();
 
 const client = new Client({
-  intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MEMBERS]
+  intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMembers]
 });
 
 client.interactions = new Collection();
@@ -28,10 +24,6 @@ process.on("uncaughtException", (err, origin) => {
 process.on("uncaughtExceptionMonitor", (err, origin) => {
   console.log('[ ANTICRASH ] :: Uncaught Exception / Catch { MONITOR }');
   console.log(err?.stack, origin);
-});
-process.on("multipleResolves", (type, promise, reason) => {
-  console.log('[ ANTICRASH ] :: Multiple Resolves');
-  console.log(type?.stack, promise, reason);
 });
 
 client.login(process.env['bot_token']);

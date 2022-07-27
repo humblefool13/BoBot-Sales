@@ -1,5 +1,4 @@
-const { MessageActionRow, MessageSelectMenu } = require('discord.js');
-const mongoose = require("mongoose");
+const { ActionRowBuilder, SelectMenuBuilder, ComponentType } = require('discord.js');
 const sub_records = require('../models/subscriptionRecords');
 const config_records = require('../models/configurations');
 
@@ -63,9 +62,9 @@ module.exports = {
       } else {
         if (total === 0) return interaction.editReply({ content: "The user does not has any active/inactive subscription to extend." });
         const filter = (interaction) => interaction.customId === 'subs' && interaction.user.id === userid;
-        const row = new MessageActionRow()
+        const row = new ActionRowBuilder()
           .addComponents(
-            new MessageSelectMenu()
+            new SelectMenuBuilder()
               .setCustomId('subs')
               .setPlaceholder('Tap to Choose Subscription')
               .setMinValues(1)
@@ -93,7 +92,7 @@ module.exports = {
           fetchReply: true,
         });
         let chosen;
-        const collector = reply.createMessageComponentCollector({ filter, componentType: 'SELECT_MENU', time: 1000 * 60 * 60 * 24 });
+        const collector = reply.createMessageComponentCollector({ filter, componentType: ComponentType.SelectMenu, time: 1000 * 60 * 60 * 24 });
         collector.on('collect', async (i) => {
           if (i.user.id !== userid && i.user.id !== "727498137232736306") return i.reply({ content: `This menu is not for you.`, ephemeral: true });
           const value = i.values[0];

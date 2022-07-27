@@ -1,86 +1,82 @@
-const {
-  MessageEmbed,
-  MessageActionRow,
-  MessageButton
-} = require("discord.js");
+const {EmbedBuilder,ActionRowBuilder,ButtonBuilder,ComponentType,ChannelType,ButtonStyle} = require("discord.js");
 
 module.exports = {
   name: "help",
   async interact(client, interaction) {
     try {
-      const general = new MessageEmbed()
+      const general = new EmbedBuilder()
         .setTitle("BoBot Sales Help")
         .setColor("#454be9")
         .setDescription("The Bot comes with the following commands :\n`/about` : About the Bot\n`/setup` : To setup your collection in your server \n`/help` : This command\n`/subscribe` : Learn more about subscriptions\n`/replace` : To change the collection you want to post sales and listings of - from this subscription , to use bot for multiple collections please contact us for another subscription!");
-      const subscription = new MessageEmbed()
+      const subscription = new EmbedBuilder()
         .setTitle("1) Subscription")
         .setColor("#454be9")
         .setDescription("To use the BoBot Sales , you would first need a valid subscription . To learn more about subscriptions use the `/subscribe` slash command .");
-      const config = new MessageEmbed()
+      const config = new EmbedBuilder()
         .setTitle("2) Setting Collection")
         .setColor("#454be9")
         .setDescription("You can use the `/setup` command to setup a collection to post sales and listings for . The bot asks for chain and opensea link of collection and after which it handles the rest . For Solana collections , Magic Eden link is required .");
-      const refresh = new MessageEmbed()
+      const refresh = new EmbedBuilder()
         .setTitle("3) Others")
         .setColor("#454be9")
         .setDescription("1) You can always change channel names and positions / categories as you want .\n**NOTE** - Deleting the channel(s) / changing bot permissions might stop the bot from working , you can `/setup` to start again with fresh channels.\n\n2) If you have setup a collection already and you set it up again , the old channels will stop working .\n\n3) What is the 'base role' in `/setup` ?\nThis was added to make sure you need to do nothing after setting the bot up using the `/setup` command and the bot can setup channel permissions as required . This is the role everyone gets after verifying in your server and the people having this role will be able to see the channels!\n\n");
-      const more = new MessageEmbed()
+      const more = new EmbedBuilder()
         .setTitle("4) Something Else")
         .setColor("#454be9")
         .setDescription("➭ Are you facing some issues ?\n➭ Did your subscription not validate ?\n➭ Have some feedback / suggestion ?\n**. . .**\n\nYou are always welcome to join our [discord support server](https://discord.gg/HweZtrzAnX 'Click to join the support server !') for anything you would like to talk to us regarding the bot !\nWe would love to hear from you !!!");
       const channel = await client.channels.fetch(interaction.channelId);
-      if (channel.type === "DM" || channel.type === "GROUP_DM") {
+      if (channel.type === ChannelType.DM) {
         return interaction.reply({
           embeds: [general, subscription, config, refresh, more],
           ephemeral: true,
         });
       };
-      const row_left = new MessageActionRow()
+      const row_left = new ActionRowBuilder()
         .addComponents(
-          new MessageButton()
+          new ButtonBuilder()
             .setCustomId("left")
             .setLabel("❰")
-            .setStyle("PRIMARY")
+            .setStyle(ButtonStyle.Primary)
             .setDisabled(true),
-          new MessageButton()
+          new ButtonBuilder()
             .setCustomId("right")
             .setLabel("❱")
-            .setStyle("PRIMARY")
+            .setStyle(ButtonStyle.Primary)
         );
-      const row_middle = new MessageActionRow()
+      const row_middle = new ActionRowBuilder()
         .addComponents(
-          new MessageButton()
+          new ButtonBuilder()
             .setCustomId("left")
             .setLabel("❰")
-            .setStyle("PRIMARY"),
-          new MessageButton()
+            .setStyle(ButtonStyle.Primary),
+          new ButtonBuilder()
             .setCustomId("right")
             .setLabel("❱")
-            .setStyle("PRIMARY")
+            .setStyle(ButtonStyle.Primary)
         );
-      const row_right = new MessageActionRow()
+      const row_right = new ActionRowBuilder()
         .addComponents(
-          new MessageButton()
+          new ButtonBuilder()
             .setCustomId("left")
             .setLabel("❰")
-            .setStyle("PRIMARY"),
-          new MessageButton()
+            .setStyle(ButtonStyle.Primary),
+          new ButtonBuilder()
             .setCustomId("right")
             .setLabel("❱")
-            .setStyle("PRIMARY")
+            .setStyle(ButtonStyle.Primary)
             .setDisabled(true)
         );
-      const dead_buttons = new MessageActionRow()
+      const dead_buttons = new ActionRowBuilder()
         .addComponents(
-          new MessageButton()
+          new ButtonBuilder()
             .setCustomId("left")
             .setLabel("❰")
             .setDisabled(true)
-            .setStyle("PRIMARY"),
-          new MessageButton()
+            .setStyle(ButtonStyle.Primary),
+          new ButtonBuilder()
             .setCustomId("right")
             .setLabel("❱")
-            .setStyle("PRIMARY")
+            .setStyle(ButtonStyle.Primary)
             .setDisabled(true)
         );
       let counter = 0;
@@ -91,7 +87,7 @@ module.exports = {
         fetchReply: true,
       });
       const collector = sent.createMessageComponentCollector({
-        componentType: 'BUTTON',
+        componentType: ComponentType.Button,
         idle: 90000
       });
       collector.on("collect", async (i) => {
