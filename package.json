@@ -18,5 +18,14 @@
   },
   "author": "",
   "license": "ISC",
+  "devDependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/humblefool13/BoBot-Sales.git"
+  },
+  "bugs": {
+    "url": "https://github.com/humblefool13/BoBot-Sales/issues"
+  },
+  "homepage": "https://github.com/humblefool13/BoBot-Sales#readme",
   "description": ""
 }
