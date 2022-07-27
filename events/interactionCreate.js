@@ -1,4 +1,4 @@
-const { Collection , InteractionType } = require("discord.js");
+const { Collection, InteractionType } = require("discord.js");
 const cooldowns = new Collection();
 
 module.exports = {
