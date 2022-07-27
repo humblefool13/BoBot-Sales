@@ -27,14 +27,14 @@ module.exports = {
       if (interaction.inGuild()) {
         const guild = client.guilds.cache.get(interaction.guildId);
         const permissions = guild.members.me.permissions;
-        if (!permissions.has(PermissionsBitField.FLAGS.ManageRoles)) return interaction.reply({ content: `I do not have the \`MANAGE_ROLES\` permission . Please grant me the permission before using this command.`, ephemeral: true });
-        if (!permissions.has(PermissionsBitField.FLAGS.ManageWebhooks)) return interaction.reply({ content: `I do not have the \`MANAGE_WEBHOOKS\` permission . Please grant me the permission before using this command.`, ephemeral: true });
-        if (!permissions.has(PermissionsBitField.FLAGS.ManageChannels)) return interaction.reply({ content: `I do not have the \`MANAGE_CHANNELS\` permission . Please grant me the permission before using this command.`, ephemeral: true });
-        if (!permissions.has(PermissionsBitField.FLAGS.UseExternalEmojis)) return interaction.reply({ content: `I do not have the \`USE_EXTERNAL_EMOJIS\` permission . Please grant me the permission before using this command.`, ephemeral: true });
-        if (!permissions.has(PermissionsBitField.FLAGS.SendMessages)) return interaction.reply({ content: `I do not have the \`SEND_MESSAGES\` permission . Please grant me the permission before using this command.`, ephemeral: true });
+        if (!permissions.has(PermissionsBitField.Flags.ManageRoles)) return interaction.reply({ content: `I do not have the \`MANAGE_ROLES\` permission . Please grant me the permission before using this command.`, ephemeral: true });
+        if (!permissions.has(PermissionsBitField.Flags.ManageWebhooks)) return interaction.reply({ content: `I do not have the \`MANAGE_WEBHOOKS\` permission . Please grant me the permission before using this command.`, ephemeral: true });
+        if (!permissions.has(PermissionsBitField.Flags.ManageChannels)) return interaction.reply({ content: `I do not have the \`MANAGE_CHANNELS\` permission . Please grant me the permission before using this command.`, ephemeral: true });
+        if (!permissions.has(PermissionsBitField.Flags.UseExternalEmojis)) return interaction.reply({ content: `I do not have the \`USE_EXTERNAL_EMOJIS\` permission . Please grant me the permission before using this command.`, ephemeral: true });
+        if (!permissions.has(PermissionsBitField.Flags.SendMessages)) return interaction.reply({ content: `I do not have the \`SEND_MESSAGES\` permission . Please grant me the permission before using this command.`, ephemeral: true });
       };
       await interaction.deferReply({ ephemeral: true });
-      if (!interaction.memberPermissions?.has(PermissionsBitField.FLAGS.Administrator) && !interaction.memberPermissions?.has(PermissionsBitField.FLAGS.ManageGuild) && interaction.user.id !== interaction.guild?.ownerId) return interaction.editReply({
+      if (!interaction.memberPermissions?.has(PermissionsBitField.Flags.Administrator) && !interaction.memberPermissions?.has(PermissionsBitField.Flags.ManageGuild) && interaction.user.id !== interaction.guild?.ownerId) return interaction.editReply({
         content: "This command can only be used by you in a Discord Server where either of the following apply :\n1) You are the Owner of the Discord Server.\n2) You have the **ADMINISTRATOR** permission in the server.\n3) You have the **MANAGE SERVER** permission in the server.",
         ephemeral: true,
       });
@@ -103,10 +103,10 @@ module.exports = {
           permissionOverwrites: [
             {
               id: client.user.id,
-              allow: [PermissionsBitField.FLAGS.ViewChannel, PermissionsBitField.FLAGS.SendMessages, PermissionsBitField.FLAGS.EmbedLinks],
+              allow: [PermissionsBitField.Flags.ViewChannel, PermissionsBitField.Flags.SendMessages, PermissionsBitField.Flags.EmbedLinks],
             }, {
               id: interaction.guild.id,
-              deny: [PermissionsBitField.FLAGS.ViewChannel],
+              deny: [PermissionsBitField.Flags.ViewChannel],
             }
           ],
         });
@@ -117,10 +117,10 @@ module.exports = {
           permissionOverwrites: [
             {
               id: client.user.id,
-              allow: [PermissionsBitField.FLAGS.ViewChannel, PermissionsBitField.FLAGS.SendMessages, PermissionsBitField.FLAGS.EmbedLinks],
+              allow: [PermissionsBitField.Flags.ViewChannel, PermissionsBitField.Flags.SendMessages, PermissionsBitField.Flags.EmbedLinks],
             }, {
               id: interaction.guild.id,
-              deny: [PermissionsBitField.FLAGS.ViewChannel],
+              deny: [PermissionsBitField.Flags.ViewChannel],
             }
           ],
         });
@@ -131,10 +131,10 @@ module.exports = {
           permissionOverwrites: [
             {
               id: client.user.id,
-              allow: [PermissionsBitField.FLAGS.ViewChannel, PermissionsBitField.FLAGS.SendMessages, PermissionsBitField.FLAGS.EmbedLinks],
+              allow: [PermissionsBitField.Flags.ViewChannel, PermissionsBitField.Flags.SendMessages, PermissionsBitField.Flags.EmbedLinks],
             }, {
               id: interaction.guild.id,
-              deny: [PermissionsBitField.FLAGS.ViewChannel],
+              deny: [PermissionsBitField.Flags.ViewChannel],
             }
           ],
         });
@@ -191,8 +191,8 @@ module.exports = {
           console.log(e)
         });
         const everyonePermissions = interaction.guild.roles.everyone.permissions;
-        if (!everyonePermissions.has(PermissionsBitField.FLAGS.UseExternalEmojis)) {
-          await interaction.guild.roles.everyone.permissions.add(PermissionsBitField.FLAGS.UseExternalEmojis);
+        if (!everyonePermissions.has(PermissionsBitField.Flags.UseExternalEmojis)) {
+          await interaction.guild.roles.everyone.permissions.add(PermissionsBitField.Flags.UseExternalEmojis);
         };
         return interaction.editReply({
           content: `The stats, sales and listings channels are set at <#${stats_channel.id}>, <#${sales_channel.id}> & <#${listings_channel.id}>. The bot will start posting stats, sales and listings soon . \n\nYou can rename the channels or move them to other categories but please do not make any changes in channels' permissions else it might affect functionality of bot.`,
@@ -210,10 +210,10 @@ module.exports = {
           permissionOverwrites: [
             {
               id: client.user.id,
-              allow: [PermissionsBitField.FLAGS.ViewChannel, PermissionsBitField.FLAGS.SendMessages, PermissionsBitField.FLAGS.EmbedLinks],
+              allow: [PermissionsBitField.Flags.ViewChannel, PermissionsBitField.Flags.SendMessages, PermissionsBitField.Flags.EmbedLinks],
             }, {
               id: interaction.guild.id,
-              deny: [PermissionsBitField.FLAGS.ViewChannel],
+              deny: [PermissionsBitField.Flags.ViewChannel],
             }
           ],
         });
@@ -224,10 +224,10 @@ module.exports = {
           permissionOverwrites: [
             {
               id: client.user.id,
-              allow: [PermissionsBitField.FLAGS.ViewChannel, PermissionsBitField.FLAGS.SendMessages, PermissionsBitField.FLAGS.EmbedLinks],
+              allow: [PermissionsBitField.Flags.ViewChannel, PermissionsBitField.Flags.SendMessages, PermissionsBitField.Flags.EmbedLinks],
             }, {
               id: interaction.guild.id,
-              deny: [PermissionsBitField.FLAGS.ViewChannel],
+              deny: [PermissionsBitField.Flags.ViewChannel],
             }
           ],
         });
@@ -238,10 +238,10 @@ module.exports = {
           permissionOverwrites: [
             {
               id: client.user.id,
-              allow: [PermissionsBitField.FLAGS.ViewChannel, PermissionsBitField.FLAGS.SendMessages, PermissionsBitField.FLAGS.EmbedLinks],
+              allow: [PermissionsBitField.Flags.ViewChannel, PermissionsBitField.Flags.SendMessages, PermissionsBitField.Flags.EmbedLinks],
             }, {
               id: interaction.guild.id,
-              deny: [PermissionsBitField.FLAGS.ViewChannel],
+              deny: [PermissionsBitField.Flags.ViewChannel],
             }
           ],
         });
@@ -287,8 +287,8 @@ module.exports = {
         findcollection.stats_webhook_message_id = stats_message.id;
         findcollection.save().then(() => {
           const everyonePermissions = interaction.guild.roles.everyone.permissions;
-          if (!everyonePermissions.has(PermissionsBitField.FLAGS.UseExternalEmojis)) {
-            interaction.guild.roles.everyone.permissions.add(PermissionsBitField.FLAGS.UseExternalEmojis);
+          if (!everyonePermissions.has(PermissionsBitField.Flags.UseExternalEmojis)) {
+            interaction.guild.roles.everyone.permissions.add(PermissionsBitField.Flags.UseExternalEmojis);
           };
           return interaction.editReply({
             content: `You have re-setup your configuration for ${findcollection.opensea_slug} . The old channels will stop working and the bot will start with the freshly made channels - <#${stats_channel.id}>, <#${sales_channel.id}> & <#${listings_channel.id}> . The bot will start posting sales and listings soon .\n\nYou can rename the channel or move them to other categories but please do not make any changes in channels' permissions else it might affect functionality of bot.`,
