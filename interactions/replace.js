@@ -92,7 +92,7 @@ module.exports = {
       const collector = reply.createMessageComponentCollector({ filter, componentType: ComponentType.SelectMenu, time: 1000 * 60 * 60 * 24 });
       collector.on('collect', async (i) => {
         await i.deferUpdate();
-        if (i.user.id !== userid) return i.reply({ content: `This menu is not for you.`, ephemeral: true });
+        if (i.user.id !== userid) return i.followUp({ content: `This menu is not for you.`, ephemeral: true });
         const value = i.values[0];
         chosen = Number(value);
         const replace = await config_records.findOne({
@@ -192,7 +192,7 @@ module.exports = {
         replace.save().catch((e) => {
           console.log(e)
         });
-        return interaction.editReply({
+        return i.update({
           content: `New collection setup successfull. The stats, sales and listings channels are set at <#${stats_channel.id}>, <#${sales_channel.id}> & <#${listings_channel.id}>. The bot will start posting sales and listings soon.\n\nYou can rename the channel or move them to other categories but please do not make any changes in channels' permissions else it might affect functionality of bot. The old channels will stop working so you may delete them.`,
           components: [],
           ephemeral: true,
