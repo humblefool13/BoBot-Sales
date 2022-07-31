@@ -1,4 +1,4 @@
-const { Collection, InteractionType } = require("discord.js");
+const { Collection } = require("discord.js");
 const cooldowns = new Collection();
 
 module.exports = {
@@ -7,7 +7,7 @@ module.exports = {
   async execute(client, interaction) {
     let Icommand = "";
     try {
-      if (interaction.type === InteractionType.ApplicationCommand) {
+      if (interaction.isChatInputCommand()) {
         Icommand = interaction.commandName;
       } else {
         return;
