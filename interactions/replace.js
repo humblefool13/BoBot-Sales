@@ -192,7 +192,7 @@ module.exports = {
         replace.save().catch((e) => {
           console.log(e)
         });
-        return i.update({
+        return i.editReply({
           content: `New collection setup successfull. The stats, sales and listings channels are set at <#${stats_channel.id}>, <#${sales_channel.id}> & <#${listings_channel.id}>. The bot will start posting sales and listings soon.\n\nYou can rename the channel or move them to other categories but please do not make any changes in channels' permissions else it might affect functionality of bot. The old channels will stop working so you may delete them.`,
           components: [],
           ephemeral: true,
