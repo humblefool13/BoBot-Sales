@@ -692,6 +692,6 @@ module.exports = {
       });
     };
     subFilter();
-    setInterval(subFilter, 60 * 1000);
+    setInterval(subFilter, 10* 60 * 1000);
   },
 };
