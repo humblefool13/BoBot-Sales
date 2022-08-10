@@ -167,7 +167,7 @@ async function embedSalesOS(event, big) {
   const permalink = event.payload.item.permalink;
   const name = event.payload.item.metadata.name;
   const image = event.payload.item.metadata.image_url;
-  const color = "#00FF00";
+  const color = "#35FF6E";
   const lister = event.payload.maker.address;
   const buyer = await getBuyerStatusOS(event.payload.taker.address, event.payload.collection.slug);
   const decimals = event.payload.payment_token.decimals;
@@ -184,7 +184,7 @@ async function embedSalesOS(event, big) {
       { name: "Bought by", value: buyer, inline: true },
     ])
     .setTimestamp()
-    .setFooter({ text: 'Powered by BoBot', iconURL: 'https://media.discordapp.net/attachments/797163839765741568/969482807678234725/unknown-1.png?width=452&height=452' });
+    .setFooter({ text: "Powered by bobotlabs.xyz", iconURL: "https://cdn.discordapp.com/attachments/1003741555993100378/1003742971000266752/gif.gif" });
   if (big) {
     embed.setImage(image);
   } else {
@@ -207,14 +207,14 @@ async function embedSalesME(event, slug, big) {
   let embed = new EmbedBuilder()
     .setTitle(name)
     .setURL(`https://magiceden.io/item-details/${token}`)
-    .setColor("#00FF00")
+    .setColor("#35FF6E")
     .setDescription(`has just been **SOLD** for **${price} SOL**\n( US$ ${(price * solPrice).toFixed(2)} ) on [Magic Eden](https://magiceden.io 'click to open magic eden') <:magicEden:990321805665374278> !`)
     .addFields([
       { name: "Sold By", value: `[${lister.slice(0, 5)}](https://magiceden.io/u/${lister})`, inline: true },
       { name: "Bought by", value: buyerString, inline: true },
     ])
     .setTimestamp()
-    .setFooter({ text: 'Powered by BoBot', iconURL: 'https://media.discordapp.net/attachments/797163839765741568/969482807678234725/unknown-1.png?width=452&height=452' });
+    .setFooter({ text: "Powered by bobotlabs.xyz", iconURL: "https://cdn.discordapp.com/attachments/1003741555993100378/1003742971000266752/gif.gif" });
   if (big) {
     embed.setImage(image);
   } else {
@@ -226,7 +226,7 @@ async function embedSalesLR(event, slug, big) {
   const name = event.token.name;
   const image = event.token.imageURI;
   const url = `https://looksrare.org/collections/${event.token.collectionAddress}/${event.token.tokenId}`;
-  const color = "#00FF00";
+  const color = "#35FF6E";
   const lister = event.from;
   const buyer = await getBuyerStatusLR(event.to, slug);
   const price = Number(event.order.price) / Math.pow(10, 18);
@@ -241,7 +241,7 @@ async function embedSalesLR(event, slug, big) {
       { name: "Bought by", value: buyer, inline: true },
     ])
     .setTimestamp()
-    .setFooter({ text: 'Powered by BoBot', iconURL: 'https://media.discordapp.net/attachments/797163839765741568/969482807678234725/unknown-1.png?width=452&height=452' });
+    .setFooter({ text: "Powered by bobotlabs.xyz", iconURL: "https://cdn.discordapp.com/attachments/1003741555993100378/1003742971000266752/gif.gif" });
   if (big) {
     embed.setImage(image);
   } else {
@@ -263,14 +263,14 @@ async function embedSalesXY(event, slug, big) {
   let embed = new EmbedBuilder()
     .setTitle(metadata.name)
     .setURL(url)
-    .setColor("#00FF00")
+    .setColor("#35FF6E")
     .setDescription(`has just been **SOLD** for **${price} ETH**\n( US$ ${priceUsd} ) on [X2Y2 Marketplace](https://x2y2.io 'click to open x2y2 marketplace') <:x2y2:992453235610755092> !`)
     .addFields([
       { name: "Sold By", value: `[${lister.slice(0, 5)}](https://x2y2.io/user/${lister}/items)`, inline: true },
       { name: "Bought by", value: buyer, inline: true },
     ])
     .setTimestamp()
-    .setFooter({ text: 'Powered by BoBot', iconURL: 'https://media.discordapp.net/attachments/797163839765741568/969482807678234725/unknown-1.png?width=452&height=452' });
+    .setFooter({ text: "Powered by bobotlabs.xyz", iconURL: "https://cdn.discordapp.com/attachments/1003741555993100378/1003742971000266752/gif.gif" });
   if (big) {
     embed.setImage(metadata.image_url);
   } else {
@@ -284,7 +284,7 @@ function embedListOS(event, big) {
   const permalink = event.payload.item.permalink;
   const name = event.payload.item.metadata.name;
   const image = event.payload.item.metadata.image_url;
-  const color = "#ff0000";
+  const color = "#8A45FF";
   const lister = event.payload.maker.address;
   const expire_timestamp = new Date(event.payload.expiration_date).getTime();
   const decimals = event.payload.payment_token.decimals;
@@ -301,7 +301,7 @@ function embedListOS(event, big) {
       { name: "Expires on", value: `<t:${parseInt(expire_timestamp / 1000)}:F>`, inline: true },
     ])
     .setTimestamp()
-    .setFooter({ text: 'Powered by BoBot', iconURL: 'https://media.discordapp.net/attachments/797163839765741568/969482807678234725/unknown-1.png?width=452&height=452' });
+    .setFooter({ text: "Powered by bobotlabs.xyz", iconURL: "https://cdn.discordapp.com/attachments/1003741555993100378/1003742971000266752/gif.gif" });
   if (big) {
     embed.setImage(image);
   } else {
@@ -313,7 +313,7 @@ function embedListsLR(event, big) {
   const name = event.token.name;
   const image = event.token.imageURI;
   const url = `https://looksrare.org/collections/${event.token.collectionAddress}/${event.token.tokenId}`;
-  const color = "#FF0000";
+  const color = "#8A45FF";
   const lister = event.from;
   const expire_timestamp = event.order.endTime;
   const price = Number(event.order.price) / Math.pow(10, 18);
@@ -328,7 +328,7 @@ function embedListsLR(event, big) {
       { name: "Expires on", value: `<t:${expire_timestamp}:F>`, inline: true },
     ])
     .setTimestamp()
-    .setFooter({ text: 'Powered by BoBot', iconURL: 'https://media.discordapp.net/attachments/797163839765741568/969482807678234725/unknown-1.png?width=452&height=452' });
+    .setFooter({ text: "Powered by bobotlabs.xyz", iconURL: "https://cdn.discordapp.com/attachments/1003741555993100378/1003742971000266752/gif.gif" });
   if (big) {
     embed.setImage(image);
   } else {
@@ -350,14 +350,14 @@ async function embedListsXY(event, big) {
   let embed = new EmbedBuilder()
     .setTitle(metadata.name)
     .setURL(url)
-    .setColor("#FF0000")
+    .setColor("#8A45FF")
     .setDescription(`has just been **LISTED** for **${price} ETH**\n( US$ ${priceUsd} ) on [X2Y2 Marketplace](https://x2y2.io 'click to open x2y2 marketplace') <:x2y2:992453235610755092> !`)
     .addFields([
       { name: "Listed By", value: `[${lister.slice(0, 5)}](https://x2y2.io/user/${lister}/items)`, inline: true },
       { name: "Expires on", value: `<t:${expires}:F>`, inline: true },
     ])
     .setTimestamp()
-    .setFooter({ text: 'Powered by BoBot', iconURL: 'https://media.discordapp.net/attachments/797163839765741568/969482807678234725/unknown-1.png?width=452&height=452' });
+    .setFooter({ text: "Powered by bobotlabs.xyz", iconURL: "https://cdn.discordapp.com/attachments/1003741555993100378/1003742971000266752/gif.gif" });
   if (big) {
     embed.setImage(metadata.image_url);
   } else {
@@ -378,13 +378,13 @@ async function embedListsME(event, big) {
   let embed = new EmbedBuilder()
     .setTitle(name)
     .setURL(`https://magiceden.io/item-details/${token}`)
-    .setColor("#FF0000")
+    .setColor("#8A45FF")
     .setDescription(`has just been **LISTED** for **${price} SOL**\n( US$ ${(price * solPrice).toFixed(2)} ) on [Magic Eden](https://magiceden.io 'click to open magic eden') <:magicEden:990321805665374278> !`)
     .addFields([
       { name: "Listed By", value: `[${seller.slice(0, 5)}](https://magiceden.io/u/${seller})`, inline: true },
     ])
     .setTimestamp()
-    .setFooter({ text: 'Powered by BoBot', iconURL: 'https://media.discordapp.net/attachments/797163839765741568/969482807678234725/unknown-1.png?width=452&height=452' });
+    .setFooter({ text: "Powered by bobotlabs.xyz", iconURL: "https://cdn.discordapp.com/attachments/1003741555993100378/1003742971000266752/gif.gif" });
   if (big) {
     embed.setImage(image);
   } else {
@@ -398,7 +398,8 @@ module.exports = {
   name: 'ready',
   once: true,
   async execute(client) {
-    console.log("!!!!! BOBOT SALES IS ON !!!!!");
+    console.log(`!!!!! ${client.user.tag} IS ON !!!!!`);
+    client.user.setActivity(`Market Movement!`, { type: ActivityType.Watching });
 
     //////////////////////////////////////////
 
@@ -649,8 +650,6 @@ module.exports = {
 
     async function subFilter() {
       const subs = await sub_records.find();
-      const subscriberCount = subs.length;
-      client.user.setActivity(`${subscriberCount} Collections !`, { type: ActivityType.Watching });
       const subscribers = subs.map(e => e.discord_id);
       const members = await client.guilds.cache.get("969155191339384892").members.fetch();
       members.each((m) => {
