@@ -42,7 +42,7 @@ module.exports = {
       };
       await interaction.deferReply({ ephemeral: true });
       if (!interaction.memberPermissions?.has(PermissionsBitField.Flags.Administrator) && !interaction.memberPermissions?.has(PermissionsBitField.Flags.ManageGuild) && interaction.user.id !== interaction.guild?.ownerId) return interaction.editReply({
-        embeds: [MakeEmbed("This command can only be used by you in a Discord Server where either of the following apply :\n1) You are the Owner of the Discord Server.\n2) You have the **ADMINISTRATOR** permission in the server.\n3) You have the **MANAGE SERVER** permission in the server.")],
+        embeds: [MakeEmbed("This command can only be used by you in a Discord Server where either of the following apply:\n1) You are the Owner of the Discord Server.\n2) You have the **ADMINISTRATOR** permission in the server.\n3) You have the **MANAGE SERVER** permission in the server.")],
         ephemeral: true,
       });
       let contract_address = "NA", magiceden_symbol = "NA";
@@ -74,11 +74,11 @@ module.exports = {
         discord_id: interaction.user.id,
       });
       if (!findsubs.length) return interaction.editReply({
-        embeds: [MakeEmbed("You do not have a subscription . Please contact us at our [support server](https://discord.gg/HweZtrzAnX) to get a subscription.")],
+        embeds: [MakeEmbed("You do not have a subscription. Please contact us at our [support server](https://discord.gg/HweZtrzAnX) to get a subscription.")],
         ephemeral: true,
       });
       if (findsubs.length === findconfigs.length && !findcollection) return interaction.editReply({
-        embeds: [MakeEmbed("You have a collection setup for every subscription you have . You can either\n1) Get a new subscription for a new collection ,\n2) Replace an exising collection by a new one using \`/replace\` command . This will stop posting for old collection and old channels will stop working.")],
+        embeds: [MakeEmbed("You have a collection setup for every subscription you have. You can either\n1) Get a new subscription for a new collection,\n2) Replace an exising collection by a new one using \`/replace\` command. This will stop posting for old collection and old channels will stop working.")],
         ephemeral: true,
       });
       if (size === "big") big = true;
@@ -156,17 +156,17 @@ module.exports = {
         };
         const sales_webhook = await sales_channel.createWebhook({
           name: 'BoBot Sales S',
-          avatar: "https://media.discordapp.net/attachments/797163839765741568/988519804472287332/sales.jpg",
+          avatar: "https://cdn.discordapp.com/attachments/1003737982106353744/1003738097084801114/Discord-1-modified_1.png",
           reason: "This webhook was created by BoBot Sales Bot to post sales.",
         });
         const listings_webhook = await listings_channel.createWebhook({
           name: 'BoBot Sales L',
-          avatar: "https://media.discordapp.net/attachments/797163839765741568/988519804472287332/sales.jpg",
+          avatar: "https://cdn.discordapp.com/attachments/1003737982106353744/1003738097084801114/Discord-1-modified_1.png",
           reason: "This webhook was created by BoBot Sales Bot to post listings.",
         });
         const stats_webhook = await stats_channel.createWebhook({
           name: 'BoBot Sales Stats',
-          avatar: "https://media.discordapp.net/attachments/797163839765741568/988519804472287332/sales.jpg",
+          avatar: "https://cdn.discordapp.com/attachments/1003737982106353744/1003738097084801114/Discord-1-modified_1.png",
           reason: "This webhook was created by BoBot Sales Bot to post stats.",
         });
         const stats_message = await stats_webhook.send({
@@ -202,7 +202,7 @@ module.exports = {
           await interaction.guild.roles.everyone.permissions.add(PermissionsBitField.Flags.UseExternalEmojis);
         };
         return interaction.editReply({
-          embeds: [MakeEmbed(`The stats, sales and listings channels are set at <#${stats_channel.id}>, <#${sales_channel.id}> & <#${listings_channel.id}>. The bot will start posting stats, sales and listings soon . \n\nYou can rename the channels or move them to other categories but please do not make any changes in channels' permissions else it might affect functionality of bot.`)],
+          embeds: [MakeEmbed(`The stats, sales and listings channels are set at <#${stats_channel.id}>, <#${sales_channel.id}> & <#${listings_channel.id}>. The bot will start posting stats, sales and listings soon.\n\nYou can rename the channels or move them to other categories but please do not make any changes in channels' permissions else it might affect functionality of bot.`)],
           ephemeral: true,
         });
       } else {
@@ -263,17 +263,17 @@ module.exports = {
         };
         const sales_webhook = await sales_channel.createWebhook({
           name: 'BoBot Sales S',
-          avatar: "https://media.discordapp.net/attachments/797163839765741568/988519804472287332/sales.jpg",
+          avatar: "https://cdn.discordapp.com/attachments/1003737982106353744/1003738097084801114/Discord-1-modified_1.png",
           reason: "This webhook was created by BoBot Sales Bot to post sales.",
         });
         const listings_webhook = await listings_channel.createWebhook({
           name: 'BoBot Sales L',
-          avatar: "https://media.discordapp.net/attachments/797163839765741568/988519804472287332/sales.jpg",
+          avatar: "https://cdn.discordapp.com/attachments/1003737982106353744/1003738097084801114/Discord-1-modified_1.png",
           reason: "This webhook was created by BoBot Sales Bot to post listings.",
         });
         const stats_webhook = await stats_channel.createWebhook({
           name: 'BoBot Sales Stats',
-          avatar: "https://media.discordapp.net/attachments/797163839765741568/988519804472287332/sales.jpg",
+          avatar: "https://cdn.discordapp.com/attachments/1003737982106353744/1003738097084801114/Discord-1-modified_1.png",
           reason: "This webhook was created by BoBot Sales Bot to post stats.",
         });
         const stats_message = await stats_webhook.send({
@@ -298,7 +298,7 @@ module.exports = {
             interaction.guild.roles.everyone.permissions.add(PermissionsBitField.Flags.UseExternalEmojis);
           };
           return interaction.editReply({
-            embeds: [MakeEmbed(`You have re-setup your configuration for ${findcollection.opensea_slug} . The old channels will stop working and the bot will start with the freshly made channels - <#${stats_channel.id}>, <#${sales_channel.id}> & <#${listings_channel.id}> . The bot will start posting sales and listings soon .\n\nYou can rename the channel or move them to other categories but please do not make any changes in channels' permissions else it might affect functionality of bot.`)],
+            embeds: [MakeEmbed(`You have re-setup your configuration for ${findcollection.opensea_slug}. The old channels will stop working and the bot will start with the freshly made channels - <#${stats_channel.id}>, <#${sales_channel.id}> & <#${listings_channel.id}>. The bot will start posting sales and listings soon.\n\nYou can rename the channel or move them to other categories but please do not make any changes in channels' permissions else it might affect functionality of bot.`)],
             ephemeral: true,
           })
         });
@@ -307,20 +307,20 @@ module.exports = {
       console.log(e);
       if (interaction.deferred || interaction.replied) {
         await interaction.followUp({
-          content: "I am facing some issues , the dev has been informed . Please try again in some hours.",
+          content: "I am facing some issues, the dev has been informed. Please try again in some hours.",
           embeds: [],
           components: [],
           ephemeral: true,
         });
       } else {
         await interaction.reply({
-          content: "I am facing some issues , the dev has been informed . Please try again in some hours.",
+          content: "I am facing some issues, the dev has been informed. Please try again in some hours.",
           embeds: [],
           components: [],
           ephemeral: true,
         });
       };
-      client.users.cache.get("727498137232736306").send(`Bobot Sales has trouble in setup.js -\n\n${e}`);
+      client.users.cache.get("727498137232736306").send(`${client.user.username} has trouble in setup.js -\n\n${e}`);
     };
-  },
-};
+  }
+}

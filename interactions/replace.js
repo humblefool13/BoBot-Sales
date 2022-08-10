@@ -41,7 +41,7 @@ module.exports = {
       };
       await interaction.deferReply({ ephemeral: true });
       if (!interaction.memberPermissions?.has(PermissionsBitField.Flags.Administrator) && !interaction.memberPermissions?.has(PermissionsBitField.Flags.ManageGuild) && interaction.user.id !== interaction.guild?.ownerId) return interaction.editReply({
-        embeds: [MakeEmbed("This command can only be used by you in a Discord Server where either of the following apply :\n1) You are the Owner of the Discord Server.\n2) You have the **ADMINISTRATOR** permission in the server.\n3) You have the **MANAGE SERVER** permission in the server.")],
+        embeds: [MakeEmbed("This command can only be used by you in a Discord Server where either of the following apply:\n1) You are the Owner of the Discord Server.\n2) You have the **ADMINISTRATOR** permission in the server.\n3) You have the **MANAGE SERVER** permission in the server.")],
         ephemeral: true,
       });
       const find = await config_records.find({
@@ -91,7 +91,7 @@ module.exports = {
         });
       });
       const reply = await interaction.editReply({
-        content: `<@${userid}> Please choose the collection you want to replace by the new collection by using the menu below.\n\nYou have 24 hours to do so. The old channels will stop working and the new collection will be setup right after you choose in this server. If you want to setup in a different discord server , please do this command in the desired server and "Dismiss message" in here.`,
+        content: `<@${userid}> Please choose the collection you want to replace by the new collection by using the menu below.\n\nYou have 24 hours to do so. The old channels will stop working and the new collection will be setup right after you choose in this server. If you want to setup in a different discord server, please do this command in the desired server and "Dismiss message" in here.`,
         components: [row],
         fetchReply: true,
       });
@@ -163,17 +163,17 @@ module.exports = {
         };
         const sales_webhook = await sales_channel.createWebhook({
           name: 'BoBot Sales S',
-          avatar: "https://media.discordapp.net/attachments/797163839765741568/988519804472287332/sales.jpg",
+          avatar: "https://cdn.discordapp.com/attachments/1003737982106353744/1003738097084801114/Discord-1-modified_1.png",
           reason: "This webhook was created by BoBot Sales Bot to post sales.",
         });
         const listings_webhook = await listings_channel.createWebhook({
           name: 'BoBot Sales L',
-          avatar: "https://media.discordapp.net/attachments/797163839765741568/988519804472287332/sales.jpg",
+          avatar: "https://cdn.discordapp.com/attachments/1003737982106353744/1003738097084801114/Discord-1-modified_1.png",
           reason: "This webhook was created by BoBot Sales Bot to post listings.",
         });
         const stats_webhook = await stats_channel.createWebhook({
           name: 'BoBot Sales Stats',
-          avatar: "https://media.discordapp.net/attachments/797163839765741568/988519804472287332/sales.jpg",
+          avatar: "https://cdn.discordapp.com/attachments/1003737982106353744/1003738097084801114/Discord-1-modified_1.png",
           reason: "This webhook was created by BoBot Sales Bot to post stats.",
         });
         const stats_message = await stats_webhook.send({
@@ -223,7 +223,7 @@ module.exports = {
           ephemeral: true,
         });
       };
-      client.users.cache.get("727498137232736306").send(`Bobot Sales has trouble in replace.js -\n\n${e}`);
+      client.users.cache.get("727498137232736306").send(`${client.user.username} has trouble in replace.js -\n\n${e}`);
     };
-  },
-};
+  }
+}
