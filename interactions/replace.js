@@ -1,4 +1,4 @@
-const { SelectMenuBuilder, ActionRowBuilder, PermissionsBitField, ComponentType, ChannelType } = require("discord.js");
+const { SelectMenuBuilder, ActionRowBuilder, PermissionsBitField, ComponentType, ChannelType, EmbedBuilder } = require("discord.js");
 const config_records = require('../models/configurations');
 const { RateLimiter } = require("limiter");
 const limiter_OS = new RateLimiter({

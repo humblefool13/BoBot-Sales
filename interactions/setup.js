@@ -1,4 +1,4 @@
-const { PermissionsBitField, ChannelType } = require("discord.js");
+const { PermissionsBitField, ChannelType, EmbedBuilder } = require("discord.js");
 const sub_records = require('../models/subscriptionRecords');
 const config_records = require('../models/configurations');
 const { RateLimiter } = require("limiter");
