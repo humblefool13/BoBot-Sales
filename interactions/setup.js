@@ -19,6 +19,13 @@ async function getOSdata(slug) {
   const pfp = response.collection.image_url;
   return [address, name, pfp];
 };
+function MakeEmbed(des) {
+  const embed = new EmbedBuilder()
+    .setColor("#8A45FF")
+    .setDescription(des)
+    .setFooter({ text: "Powered by bobotlabs.xyz", iconURL: "https://cdn.discordapp.com/attachments/1003741555993100378/1003742971000266752/gif.gif" });
+  return embed;
+};
 
 module.exports = {
   name: "setup",
@@ -35,7 +42,7 @@ module.exports = {
       };
       await interaction.deferReply({ ephemeral: true });
       if (!interaction.memberPermissions?.has(PermissionsBitField.Flags.Administrator) && !interaction.memberPermissions?.has(PermissionsBitField.Flags.ManageGuild) && interaction.user.id !== interaction.guild?.ownerId) return interaction.editReply({
-        content: "This command can only be used by you in a Discord Server where either of the following apply :\n1) You are the Owner of the Discord Server.\n2) You have the **ADMINISTRATOR** permission in the server.\n3) You have the **MANAGE SERVER** permission in the server.",
+        embeds: [MakeEmbed("This command can only be used by you in a Discord Server where either of the following apply :\n1) You are the Owner of the Discord Server.\n2) You have the **ADMINISTRATOR** permission in the server.\n3) You have the **MANAGE SERVER** permission in the server.")],
         ephemeral: true,
       });
       let contract_address = "NA", magiceden_symbol = "NA";
@@ -67,11 +74,11 @@ module.exports = {
         discord_id: interaction.user.id,
       });
       if (!findsubs.length) return interaction.editReply({
-        content: "You do not have a subscription . Please contact us at our [support server](https://discord.gg/HweZtrzAnX) to get a subscription.",
+        embeds: [MakeEmbed("You do not have a subscription . Please contact us at our [support server](https://discord.gg/HweZtrzAnX) to get a subscription.")],
         ephemeral: true,
       });
       if (findsubs.length === findconfigs.length && !findcollection) return interaction.editReply({
-        content: "You have a collection setup for every subscription you have . You can either\n1) Get a new subscription for a new collection ,\n2) Replace an exising collection by a new one using \`/replace\` command . This will stop posting for old collection and old channels will stop working.",
+        embeds: [MakeEmbed("You have a collection setup for every subscription you have . You can either\n1) Get a new subscription for a new collection ,\n2) Replace an exising collection by a new one using \`/replace\` command . This will stop posting for old collection and old channels will stop working.")],
         ephemeral: true,
       });
       if (size === "big") big = true;
@@ -81,7 +88,7 @@ module.exports = {
         } while (!contract_address.startsWith("0x"))
       } else if (chain === "SOL") {
         const ME_link = interaction.options.getString('magic_eden_link');
-        if (!ME_link) return interaction.editReply({ content: "Providing a Magic Eden link is necessary for Solana collections.", ephemeral: true });
+        if (!ME_link) return interaction.editReply({ embeds: [MakeEmbed("Providing a Magic Eden link is necessary for Solana collections.")], ephemeral: true });
         magiceden_symbol = ME_link.slice(ME_link.lastIndexOf("/") + 1);
       };
       if (!findcollection) {
@@ -99,7 +106,7 @@ module.exports = {
         const stats_channel = await interaction.guild.channels.create({
           name: "📈︱stats",
           parent: category,
-          topic: "Stats channel Managed by BoBot Sales Bot : https://discord.gg/HweZtrzAnX",
+          topic: "Stats channel Managed by BoBot Labs Sales Bot : https://discord.gg/HweZtrzAnX",
           permissionOverwrites: [
             {
               id: client.user.id,
@@ -113,7 +120,7 @@ module.exports = {
         const sales_channel = await interaction.guild.channels.create({
           name: "📈︱sales",
           parent: category,
-          topic: "Sales channel Managed by BoBot Sales Bot : https://discord.gg/HweZtrzAnX",
+          topic: "Sales channel Managed by BoBot Labs Sales Bot : https://discord.gg/HweZtrzAnX",
           permissionOverwrites: [
             {
               id: client.user.id,
@@ -127,7 +134,7 @@ module.exports = {
         const listings_channel = await interaction.guild.channels.create({
           name: "📈︱listings",
           parent: category,
-          topic: "Listings Channel Managed by BoBot Sales Bot : https://discord.gg/HweZtrzAnX",
+          topic: "Listings Channel Managed by BoBot Labs Sales Bot : https://discord.gg/HweZtrzAnX",
           permissionOverwrites: [
             {
               id: client.user.id,
@@ -195,7 +202,7 @@ module.exports = {
           await interaction.guild.roles.everyone.permissions.add(PermissionsBitField.Flags.UseExternalEmojis);
         };
         return interaction.editReply({
-          content: `The stats, sales and listings channels are set at <#${stats_channel.id}>, <#${sales_channel.id}> & <#${listings_channel.id}>. The bot will start posting stats, sales and listings soon . \n\nYou can rename the channels or move them to other categories but please do not make any changes in channels' permissions else it might affect functionality of bot.`,
+          embeds: [MakeEmbed(`The stats, sales and listings channels are set at <#${stats_channel.id}>, <#${sales_channel.id}> & <#${listings_channel.id}>. The bot will start posting stats, sales and listings soon . \n\nYou can rename the channels or move them to other categories but please do not make any changes in channels' permissions else it might affect functionality of bot.`)],
           ephemeral: true,
         });
       } else {
@@ -206,7 +213,7 @@ module.exports = {
         const stats_channel = await interaction.guild.channels.create({
           name: "📈︱stats",
           parent: category,
-          topic: "Stats channel Managed by BoBot Sales Bot : https://discord.gg/HweZtrzAnX",
+          topic: "Stats channel Managed by BoBot Labs Sales Bot : https://discord.gg/HweZtrzAnX",
           permissionOverwrites: [
             {
               id: client.user.id,
@@ -220,7 +227,7 @@ module.exports = {
         const sales_channel = await interaction.guild.channels.create({
           name: "📈︱sales",
           parent: category,
-          topic: "Sales channel Managed by BoBot Sales Bot : https://discord.gg/HweZtrzAnX",
+          topic: "Sales channel Managed by BoBot Labs Sales Bot : https://discord.gg/HweZtrzAnX",
           permissionOverwrites: [
             {
               id: client.user.id,
@@ -234,7 +241,7 @@ module.exports = {
         const listings_channel = await interaction.guild.channels.create({
           name: "📈︱listings",
           parent: category,
-          topic: "Listings Channel Managed by BoBot Sales Bot : https://discord.gg/HweZtrzAnX",
+          topic: "Listings Channel Managed by BoBot Labs Sales Bot : https://discord.gg/HweZtrzAnX",
           permissionOverwrites: [
             {
               id: client.user.id,
@@ -291,7 +298,7 @@ module.exports = {
             interaction.guild.roles.everyone.permissions.add(PermissionsBitField.Flags.UseExternalEmojis);
           };
           return interaction.editReply({
-            content: `You have re-setup your configuration for ${findcollection.opensea_slug} . The old channels will stop working and the bot will start with the freshly made channels - <#${stats_channel.id}>, <#${sales_channel.id}> & <#${listings_channel.id}> . The bot will start posting sales and listings soon .\n\nYou can rename the channel or move them to other categories but please do not make any changes in channels' permissions else it might affect functionality of bot.`,
+            embeds: [MakeEmbed(`You have re-setup your configuration for ${findcollection.opensea_slug} . The old channels will stop working and the bot will start with the freshly made channels - <#${stats_channel.id}>, <#${sales_channel.id}> & <#${listings_channel.id}> . The bot will start posting sales and listings soon .\n\nYou can rename the channel or move them to other categories but please do not make any changes in channels' permissions else it might affect functionality of bot.`)],
             ephemeral: true,
           })
         });
