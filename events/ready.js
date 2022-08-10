@@ -178,7 +178,7 @@ async function embedSalesOS(event, big) {
     .setTitle(name)
     .setURL(permalink)
     .setColor(color)
-    .setDescription(`has just been **SOLD** for **${price} ${symbol}**\n( US$ ${priceUSD} ) on [Opensea](https://opensea.io 'click to open opensea') <:OpenSeaLogo:990321456263098398> !`)
+    .setDescription(`has just been **SOLD** for **${price} ${symbol}**\n( US$ ${priceUSD} ) on [Opensea](https://opensea.io 'click to open opensea') <:OpenSeaLogo:990321456263098398>!`)
     .addFields([
       { name: "Sold By", value: `[${lister.slice(0, 5)}](https://opensea.io/${lister})`, inline: true },
       { name: "Bought by", value: buyer, inline: true },
@@ -208,7 +208,7 @@ async function embedSalesME(event, slug, big) {
     .setTitle(name)
     .setURL(`https://magiceden.io/item-details/${token}`)
     .setColor("#35FF6E")
-    .setDescription(`has just been **SOLD** for **${price} SOL**\n( US$ ${(price * solPrice).toFixed(2)} ) on [Magic Eden](https://magiceden.io 'click to open magic eden') <:magicEden:990321805665374278> !`)
+    .setDescription(`has just been **SOLD** for **${price} SOL**\n( US$ ${(price * solPrice).toFixed(2)} ) on [Magic Eden](https://magiceden.io 'click to open magic eden') <:magicEden:990321805665374278>!`)
     .addFields([
       { name: "Sold By", value: `[${lister.slice(0, 5)}](https://magiceden.io/u/${lister})`, inline: true },
       { name: "Bought by", value: buyerString, inline: true },
@@ -235,7 +235,7 @@ async function embedSalesLR(event, slug, big) {
     .setTitle(name)
     .setURL(url)
     .setColor(color)
-    .setDescription(`has just been **SOLD** for **${price} ETH**\n( US$ ${priceUsd} ) on [Looksrare](https://looksrare.org 'click to open looksrare') <:looksblack:990321530510643340> !`)
+    .setDescription(`has just been **SOLD** for **${price} ETH**\n( US$ ${priceUsd} ) on [Looksrare](https://looksrare.org 'click to open looksrare') <:looksblack:990321530510643340>!`)
     .addFields([
       { name: "Sold By", value: `[${lister.slice(0, 5)}](https://looksrare.org/accounts/${lister})`, inline: true },
       { name: "Bought by", value: buyer, inline: true },
@@ -264,7 +264,7 @@ async function embedSalesXY(event, slug, big) {
     .setTitle(metadata.name)
     .setURL(url)
     .setColor("#35FF6E")
-    .setDescription(`has just been **SOLD** for **${price} ETH**\n( US$ ${priceUsd} ) on [X2Y2 Marketplace](https://x2y2.io 'click to open x2y2 marketplace') <:x2y2:992453235610755092> !`)
+    .setDescription(`has just been **SOLD** for **${price} ETH**\n( US$ ${priceUsd} ) on [X2Y2 Marketplace](https://x2y2.io 'click to open x2y2 marketplace') <:x2y2:992453235610755092>!`)
     .addFields([
       { name: "Sold By", value: `[${lister.slice(0, 5)}](https://x2y2.io/user/${lister}/items)`, inline: true },
       { name: "Bought by", value: buyer, inline: true },
@@ -295,7 +295,7 @@ function embedListOS(event, big) {
     .setTitle(name)
     .setURL(permalink)
     .setColor(color)
-    .setDescription(`has just been **LISTED** for **${price} ${symbol}**\n( US$ ${priceUSD} ) on [Opensea](https://opensea.io 'click to open opensea') <:OpenSeaLogo:990321456263098398> !`)
+    .setDescription(`has just been **LISTED** for **${price} ${symbol}**\n( US$ ${priceUSD} ) on [Opensea](https://opensea.io 'click to open opensea') <:OpenSeaLogo:990321456263098398>!`)
     .addFields([
       { name: "Listed By", value: `[${lister.slice(0, 5)}](https://opensea.io/${lister})`, inline: true },
       { name: "Expires on", value: `<t:${parseInt(expire_timestamp / 1000)}:F>`, inline: true },
@@ -322,7 +322,7 @@ function embedListsLR(event, big) {
     .setTitle(name)
     .setURL(url)
     .setColor(color)
-    .setDescription(`has just been **LISTED** for **${price} ETH**\n( US$ ${priceUsd} ) on [Looksrare](https://looksrare.org 'click to open looksrare') <:looksblack:990321530510643340> !`)
+    .setDescription(`has just been **LISTED** for **${price} ETH**\n( US$ ${priceUsd} ) on [Looksrare](https://looksrare.org 'click to open looksrare') <:looksblack:990321530510643340>!`)
     .addFields([
       { name: "Listed By", value: `[${lister.slice(0, 5)}](https://looksrare.org/accounts/${lister})`, inline: true },
       { name: "Expires on", value: `<t:${expire_timestamp}:F>`, inline: true },
@@ -351,7 +351,7 @@ async function embedListsXY(event, big) {
     .setTitle(metadata.name)
     .setURL(url)
     .setColor("#8A45FF")
-    .setDescription(`has just been **LISTED** for **${price} ETH**\n( US$ ${priceUsd} ) on [X2Y2 Marketplace](https://x2y2.io 'click to open x2y2 marketplace') <:x2y2:992453235610755092> !`)
+    .setDescription(`has just been **LISTED** for **${price} ETH**\n( US$ ${priceUsd} ) on [X2Y2 Marketplace](https://x2y2.io 'click to open x2y2 marketplace') <:x2y2:992453235610755092>!`)
     .addFields([
       { name: "Listed By", value: `[${lister.slice(0, 5)}](https://x2y2.io/user/${lister}/items)`, inline: true },
       { name: "Expires on", value: `<t:${expires}:F>`, inline: true },
@@ -379,7 +379,7 @@ async function embedListsME(event, big) {
     .setTitle(name)
     .setURL(`https://magiceden.io/item-details/${token}`)
     .setColor("#8A45FF")
-    .setDescription(`has just been **LISTED** for **${price} SOL**\n( US$ ${(price * solPrice).toFixed(2)} ) on [Magic Eden](https://magiceden.io 'click to open magic eden') <:magicEden:990321805665374278> !`)
+    .setDescription(`has just been **LISTED** for **${price} SOL**\n( US$ ${(price * solPrice).toFixed(2)} ) on [Magic Eden](https://magiceden.io 'click to open magic eden') <:magicEden:990321805665374278>!`)
     .addFields([
       { name: "Listed By", value: `[${seller.slice(0, 5)}](https://magiceden.io/u/${seller})`, inline: true },
     ])
