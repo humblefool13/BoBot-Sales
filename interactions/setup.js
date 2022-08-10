@@ -155,17 +155,17 @@ module.exports = {
           await stats_channel.permissionOverwrites.create(role.id, { ViewChannel: true, SendMessages: false, ReadMessageHistory: true, AddReactions: true, UseExternalEmojis: true });
         };
         const sales_webhook = await sales_channel.createWebhook({
-          name: 'BoBot Sales S',
+          name: 'BoSales S',
           avatar: "https://cdn.discordapp.com/attachments/1003737982106353744/1003738097084801114/Discord-1-modified_1.png",
           reason: "This webhook was created by BoBot Sales Bot to post sales.",
         });
         const listings_webhook = await listings_channel.createWebhook({
-          name: 'BoBot Sales L',
+          name: 'BoSales L',
           avatar: "https://cdn.discordapp.com/attachments/1003737982106353744/1003738097084801114/Discord-1-modified_1.png",
           reason: "This webhook was created by BoBot Sales Bot to post listings.",
         });
         const stats_webhook = await stats_channel.createWebhook({
-          name: 'BoBot Sales Stats',
+          name: 'BoSales Stats',
           avatar: "https://cdn.discordapp.com/attachments/1003737982106353744/1003738097084801114/Discord-1-modified_1.png",
           reason: "This webhook was created by BoBot Sales Bot to post stats.",
         });
@@ -262,17 +262,17 @@ module.exports = {
           await stats_channel.permissionOverwrites.create(role.id, { ViewChannel: true, SendMessages: false, ReadMessageHistory: true, AddReactions: true, UseExternalEmojis: true });
         };
         const sales_webhook = await sales_channel.createWebhook({
-          name: 'BoBot Sales S',
+          name: 'BoSales S',
           avatar: "https://cdn.discordapp.com/attachments/1003737982106353744/1003738097084801114/Discord-1-modified_1.png",
           reason: "This webhook was created by BoBot Sales Bot to post sales.",
         });
         const listings_webhook = await listings_channel.createWebhook({
-          name: 'BoBot Sales L',
+          name: 'BoSales L',
           avatar: "https://cdn.discordapp.com/attachments/1003737982106353744/1003738097084801114/Discord-1-modified_1.png",
           reason: "This webhook was created by BoBot Sales Bot to post listings.",
         });
         const stats_webhook = await stats_channel.createWebhook({
-          name: 'BoBot Sales Stats',
+          name: 'BoSales Stats',
           avatar: "https://cdn.discordapp.com/attachments/1003737982106353744/1003738097084801114/Discord-1-modified_1.png",
           reason: "This webhook was created by BoBot Sales Bot to post stats.",
         });
