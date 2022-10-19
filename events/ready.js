@@ -31,7 +31,7 @@ const limiter_XY = new RateLimiter({
 });
 async function updatePrice() {
   const req = await fetch(PriceUrl);
-  const temp = await req.json();
+  const temp = await req.json().catch();
   solPrice = Number(temp.solana.usd);
   ethPrice = Number(temp.ethereum.usd);
 };
@@ -77,7 +77,7 @@ async function getXY(url) {
     method: "GET"
   };
   const result = await fetch(url, options);
-  const response = await result.json();
+  const response = await result.json().catch();
   return response;
 };
 /////////////////////////////////////////////
