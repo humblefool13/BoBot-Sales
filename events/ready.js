@@ -41,7 +41,7 @@ async function getOS(url) {
   const remainingRequests = await limiter_OS.removeTokens(1);
   if (remainingRequests < 0) return;
   const result = await fetch(url);
-  const response = await result.json();
+  const response = await result.json().catch();
   return response;
 };
 async function getOSKey(url) {
@@ -49,21 +49,21 @@ async function getOSKey(url) {
   if (remainingRequests < 0) return;
   const options = { method: 'GET', headers: { Accept: 'application/json', 'X-API-KEY': process.env['os_key'] } };
   const result = await fetch(url, options);
-  const response = await result.json();
+  const response = await result.json().catch();
   return response;
 };
 async function getME(url) {
   const remainingRequests = await limiter_ME.removeTokens(1);
   if (remainingRequests < 0) return;
   const result = await fetch(url);
-  const response = await result.json();
+  const response = await result.json().catch();
   return response;
 };
 async function getLR(url) {
   const remainingRequests = await limiter_LR.removeTokens(1);
   if (remainingRequests < 0) return;
   const result = await fetch(url);
-  const response = await result.json();
+  const response = await result.json().catch();
   return response;
 };
 async function getXY(url) {
@@ -456,6 +456,19 @@ module.exports = {
         };
       });
     });
+
+    /*
+    const channelToPush = await client.guilds.cache.get("1008754687148830792").channels.fetch("1012141439846731777");
+    const availableWebhooks = await channelToPush.fetchWebhooks();
+    availableWebhooks.each((webhook)=>{
+      if (webhook.id !== "1012141447530696865") return;
+      webhook.send({
+        username: "OnChain Buccaneers (OCB) | BoBot",
+        avatarURL: "https://openseauserdata.com/files/b5a183f7a5c95d4ab088dfff1f5becfc.png",
+        embeds: [new EmbedBuilder().setTitle("OCB #787").setDescription("has just been SOLD for 0.299 ETH\n( US$ 420.72 ) on [Opensea](https://opensea.io/) <:OpenSeaLogo:990321456263098398>!").addFields({ name: 'Sold By', value: '[0xeAa](https://opensea.io/0xeAad53DE8f59F896d1F1a4006Df59e16d8119755)', inline: true },{ name: 'Bought By', value: '[0xb1f](https://opensea.io/0xb1f3aF600E63Ba0CFddB4139aF42084977Bd4800)', inline: true }).setImage("https://i.seadn.io/gae/SFXFMGBgF50Jueix7BaJrFu1emZ9R-R-e6X_AE9XhlZkccH7vVVLSLTjnkNBsWpyKZckbrdXOGnCXMDsYi14G2Fjn7cN9fV5zlCf?auto=format&w=1000").setFooter({ text: "Powered by bobotlabs.xyz", iconURL: "https://cdn.discordapp.com/attachments/1003741555993100378/1003742971000266752/gif.gif" }).setColor("#35FF6E")],
+      }).catch((e) => { });
+    });
+    */
 
     //////////////// MAGIC EDEN EVENTS ////////////////
 
