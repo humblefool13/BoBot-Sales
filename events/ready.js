@@ -427,6 +427,7 @@ module.exports = {
     clientOS.onEvents("*", [EventType.ITEM_SOLD, EventType.ITEM_LISTED], async (event) => {
       const slug = event.payload.collection.slug;
       if (!slugs.includes(slug)) return;
+      if (new Date(event.payload.event_timestamp).valueOf() + 5 * 60 * 1000 < Date.now()) return;
       configurations.forEach(async (config) => {
         if (config.opensea_slug.trim() !== slug) return;
         if (event.event_type === "item_sold") {
