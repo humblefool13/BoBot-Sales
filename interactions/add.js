@@ -1,4 +1,4 @@
-const { ActionRowBuilder, SelectMenuBuilder, ComponentType } = require('discord.js');
+const { ActionRowBuilder, StringSelectMenuBuilder, ComponentType } = require('discord.js');
 const sub_records = require('../models/subscriptionRecords');
 const config_records = require('../models/configurations');
 
@@ -64,7 +64,7 @@ module.exports = {
         const filter = (interaction) => interaction.customId === 'subs' && interaction.user.id === userid;
         const row = new ActionRowBuilder()
           .addComponents(
-            new SelectMenuBuilder()
+            new StringSelectMenuBuilder()
               .setCustomId('subs')
               .setPlaceholder('Tap to Choose Subscription')
               .setMinValues(1)
