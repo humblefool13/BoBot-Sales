@@ -554,7 +554,7 @@ module.exports = {
         const url = `https://api.looksrare.org/api/v1/events?collection=${address}&pagination[first]=150`;
         const getevents = await getLRevents(url);
         const events = getevents.data;
-        const timestampLatest = events.length ? new Date(events[0].createdAt).getTime() : new Date.now();
+        const timestampLatest = events.length ? new Date(events[0].createdAt).getTime() : Date.now();
         str = str + [address, timestampLatest, config.discord_id, config.number].join(",") + "\n";
         const times = fs.readFileSync("./marketplaces/looksrare.txt", { encoding: 'utf8', flag: 'r' });
         const collections = times.split("\n");
