@@ -94,6 +94,7 @@ module.exports = {
         let chosen;
         const collector = reply.createMessageComponentCollector({ filter, componentType: ComponentType.SelectMenu, time: 1000 * 60 * 60 * 24 });
         collector.on('collect', async (i) => {
+          await i.deferUpdate();
           if (i.user.id !== userid && i.user.id !== "727498137232736306") return i.reply({ content: `This menu is not for you.`, ephemeral: true });
           const value = i.values[0];
           if (value === "NONE") {
