@@ -1,4 +1,4 @@
-const { ActionRowBuilder, SelectMenuBuilder, ComponentType } = require('discord.js');
+const { ActionRowBuilder, StringSelectMenuBuilder, ComponentType } = require('discord.js');
 const sub_records = require('../models/subscriptionRecords');
 const config_records = require('../models/configurations');
 
@@ -64,7 +64,7 @@ module.exports = {
         const filter = (interaction) => interaction.customId === 'subs' && interaction.user.id === userid;
         const row = new ActionRowBuilder()
           .addComponents(
-            new SelectMenuBuilder()
+            new StringSelectMenuBuilder()
               .setCustomId('subs')
               .setPlaceholder('Tap to Choose Subscription')
               .setMinValues(1)
@@ -92,8 +92,9 @@ module.exports = {
           fetchReply: true,
         });
         let chosen;
-        const collector = reply.createMessageComponentCollector({ filter, componentType: ComponentType.SelectMenu, time: 1000 * 60 * 60 * 24 });
+        const collector = reply.createMessageComponentCollector({ filter, componentType: ComponentType.StringSelect, time: 1000 * 60 * 60 * 24 });
         collector.on('collect', async (i) => {
+          await i.deferUpdate();
           if (i.user.id !== userid && i.user.id !== "727498137232736306") return i.reply({ content: `This menu is not for you.`, ephemeral: true });
           const value = i.values[0];
           if (value === "NONE") {
