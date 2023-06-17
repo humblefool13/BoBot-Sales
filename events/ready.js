@@ -6,6 +6,10 @@ const { WebSocket } = require('ws');
 const { OpenSeaStreamClient, EventType } = require('@opensea/stream-js');
 const fetch = require("node-fetch");
 const { RateLimiter } = require("limiter");
+const options = {
+  method: 'GET',
+  headers: {accept: 'application/json', 'X-API-KEY': process.env['os_key']}
+};
 const PriceUrl = "https://api.coingecko.com/api/v3/simple/price?ids=solana%2Cethereum&vs_currencies=usd";
 let solPrice = 0;
 let ethPrice = 0;
@@ -40,14 +44,13 @@ async function updatePrice() {
 async function getOS(url) {
   const remainingRequests = await limiter_OS.removeTokens(1);
   if (remainingRequests < 0) return;
-  const result = await fetch(url);
+  const result = await fetch(url, options);
   const response = await result.json();
   return response;
 };
 async function getOSKey(url) {
   const remainingRequests = await limiter_OS.removeTokens(1);
   if (remainingRequests < 0) return;
-  const options = { method: 'GET', headers: { Accept: 'application/json', 'X-API-KEY': process.env['os_key'] } };
   const result = await fetch(url, options);
   const response = await result.json();
   return response;

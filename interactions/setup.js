@@ -7,12 +7,16 @@ const limiter_OS = new RateLimiter({
   interval: "second",
   fireImmediately: true
 });
+const options = {
+  method: 'GET',
+  headers: {accept: 'application/json', 'X-API-KEY': process.env['os_key']}
+};
 const fetch = require("node-fetch");
 async function getOSdata(slug) {
   const remainingRequests = await limiter_OS.removeTokens(1);
   if (remainingRequests < 0) return;
   const url = `https://api.opensea.io/api/v1/collection/${slug}`;
-  const result = await fetch(url);
+  const result = await fetch(url, options);
   const response = await result.json();
   const address = (response?.collection?.primary_asset_contracts.length) ? response.collection.primary_asset_contracts[0].address : null;
   const name = response.collection.name;
