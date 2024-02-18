@@ -554,7 +554,7 @@ module.exports = {
       configs.forEach(async (config) => {
         const address = config.contract_address.trim();
         const slug = config.opensea_slug.trim();
-        const url = `https://api.looksrare.org/api/v1/events?collection=${address}&pagination[first]=150`;
+        const url = `https://api.looksrare.org/api/v2/events?collection=${address}&pagination[first]=150`;
         const getevents = await getLRevents(url);
         const events = getevents.data;
         const timestampLatest = events.length ? new Date(events[0].createdAt).getTime() : Date.now();
