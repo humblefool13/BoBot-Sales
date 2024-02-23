@@ -8,7 +8,7 @@ const fetch = require("node-fetch");
 const { RateLimiter } = require("limiter");
 const options = {
   method: "GET",
-  headers: { accept: "application/json", "X-API-KEY": process.env["os_key"] },
+  headers: { accept: "application/json", "x-api-key": process.env["os_key"] },
 };
 const PriceUrl =
   "https://api.coingecko.com/api/v3/simple/price?ids=solana%2Cethereum&vs_currencies=usd";
@@ -46,7 +46,7 @@ async function getOS(url) {
   const remainingRequests = await limiter_OS.removeTokens(1);
   if (remainingRequests < 0) return;
   const result = await fetch(url, options);
-  const response = await result.json();
+  const response = await result.json().catch();
   return response;
 }
 async function getOSKey(url) {
@@ -88,15 +88,12 @@ async function getXY(url) {
 ////////////  GET BUYER STATUS //////////////
 async function getBuyerStatusOS(buyer, slug) {
   let found = false;
-  const url = `https://api.opensea.io/api/v2/collections?asset_owner=${buyer.trim()}&offset=0&limit=300`;
+  const url = `https://api.opensea.io/api/v2/chain/ethereum/account/${buyer.trim()}/nfts?collection=${slug}`;
   let collections;
   do {
     collections = await getOS(url);
-  } while (!Array.isArray(collections));
-  collections.forEach((collection) => {
-    if (collection.slug !== slug) return;
-    if (collection.owned_asset_count > 1) found = true;
-  });
+  } while (!Array.isArray(collections?.nfts));
+  if (collections.nfts.length) found = true;
   const field = found
     ? `[${buyer.slice(0, 5)}](https://opensea.io/${buyer})`
     : `[${buyer.slice(
@@ -107,15 +104,12 @@ async function getBuyerStatusOS(buyer, slug) {
 }
 async function getBuyerStatusME(buyer, slug) {
   let found = false;
-  const url = `https://api.opensea.io/api/v2/collections?asset_owner=${buyer.trim()}&offset=0&limit=300`;
+  const url = `https://api.opensea.io/api/v2/chain/ethereum/account/${buyer.trim()}/nfts?collection=${slug}`;
   let collections;
   do {
     collections = await getOS(url);
-  } while (!Array.isArray(collections));
-  collections.forEach((collection) => {
-    if (collection.slug !== slug) return;
-    if (collection.owned_asset_count > 1) found = true;
-  });
+  } while (!Array.isArray(collections?.nfts));
+  if (collections.nfts.length) found = true;
   const field = found
     ? `[${buyer.slice(0, 5)}](https://magiceden.io/u/${buyer})`
     : `[${buyer.slice(
@@ -126,15 +120,12 @@ async function getBuyerStatusME(buyer, slug) {
 }
 async function getBuyerStatusLR(buyer, slug) {
   let found = false;
-  const url = `https://api.opensea.io/api/v2/collections?asset_owner=${buyer.trim()}&offset=0&limit=300`;
+  const url = `https://api.opensea.io/api/v2/chain/ethereum/account/${buyer.trim()}/nfts?collection=${slug}`;
   let collections;
   do {
     collections = await getOS(url);
-  } while (!Array.isArray(collections));
-  collections.forEach((collection) => {
-    if (collection.slug !== slug) return;
-    if (collection.owned_asset_count > 1) found = true;
-  });
+  } while (!Array.isArray(collections?.nfts));
+  if (collections.nfts.length) found = true;
   const field = found
     ? `[${buyer.slice(0, 5)}](https://looksrare.org/accounts/${buyer})`
     : `[${buyer.slice(
@@ -145,15 +136,12 @@ async function getBuyerStatusLR(buyer, slug) {
 }
 async function getBuyerStatusXY(buyer, slug) {
   let found = false;
-  const url = `https://api.opensea.io/api/v2/collections?asset_owner=${buyer.trim()}&offset=0&limit=300`;
+  const url = `https://api.opensea.io/api/v2/chain/ethereum/account/${buyer.trim()}/nfts?collection=${slug}`;
   let collections;
   do {
     collections = await getOS(url);
-  } while (!Array.isArray(collections));
-  collections.forEach((collection) => {
-    if (collection.slug !== slug) return;
-    if (collection.owned_asset_count > 1) found = true;
-  });
+  } while (!Array.isArray(collections?.nfts));
+  if (collections.nfts.length) found = true;
   const field = found
     ? `[${buyer.slice(0, 5)}](https://x2y2.io/user/${buyer}/items)`
     : `[${buyer.slice(
@@ -621,6 +609,8 @@ module.exports = {
       }
     );
 
+    // Code to Send custom Embed
+
     /*
     const channelToPush = await client.guilds.cache.get("1008754687148830792").channels.fetch("1012141439846731777");
     const availableWebhooks = await channelToPush.fetchWebhooks();
@@ -724,190 +714,190 @@ module.exports = {
 
     //////////////// ETHEREUM EVENTS ////////////////
 
-    function getEthCollections(configurations) {
-      let eth = [];
-      configurations.forEach((config) => {
-        if (config.chain !== "ETH") return;
-        eth.push(config);
-      });
-      pollLREvents(eth);
-      pollXYEvents(eth);
-    }
-    getEthCollections(configurations);
-    setInterval(function () {
-      getEthCollections(configurations);
-    }, 60000);
-    async function pollLREvents(configs) {
-      let done = 0;
-      let str = "";
-      configs.forEach(async (config) => {
-        const address = config.contract_address.trim();
-        const slug = config.opensea_slug.trim();
-        const url = `https://api.looksrare.org/api/v2/events?collection=${address}&pagination[first]=150`;
-        const getevents = await getLRevents(url);
-        const events = getevents.data;
-        const timestampLatest = events.length
-          ? new Date(events[0].createdAt).getTime()
-          : Date.now();
-        str =
-          str +
-          [address, timestampLatest, config.discord_id, config.number].join(
-            ","
-          ) +
-          "\n";
-        const times = fs.readFileSync("./marketplaces/looksrare.txt", {
-          encoding: "utf8",
-          flag: "r",
-        });
-        const collections = times.split("\n");
-        let timeStampLastLine = collections.find(
-          (el) =>
-            el.includes(address) &&
-            el.includes(config.discord_id) &&
-            el.includes(config.number)
-        );
-        if (!timeStampLastLine) timeStampLastLine = `a,${Date.now()},a,a`;
-        let timestampLast = timeStampLastLine.split(",");
-        timestampLast = Number(timestampLast[1]);
-        ++done;
-        events.forEach(async (event) => {
-          const eventTimestamp = new Date(event.createdAt).getTime();
-          if (eventTimestamp <= timestampLast) return;
-          if (event.type === "SALE") {
-            const embed = await embedSalesLR(event, slug, config.big);
-            const channel = await client.guilds.cache
-              .get(config.server_id)
-              .channels.fetch(config.sale_channel);
-            const webhooks = await channel.fetchWebhooks();
-            webhooks.each((webhook) => {
-              if (webhook.id !== config.sales_webhook_id) return;
-              webhook
-                .send({
-                  username: config.collection_name,
-                  avatarURL: config.collection_pfp,
-                  embeds: [embed],
-                })
-                .catch((e) => {});
-            });
-          } else if (event.type === "LIST") {
-            const embed = embedListsLR(event, config.big);
-            const channel = await client.guilds.cache
-              .get(config.server_id)
-              .channels.fetch(config.list_channel);
-            const webhooks = await channel.fetchWebhooks();
-            webhooks.each((webhook) => {
-              if (webhook.id !== config.listings_webhook_id) return;
-              webhook
-                .send({
-                  username: config.collection_name,
-                  avatarURL: config.collection_pfp,
-                  embeds: [embed],
-                })
-                .catch((e) => {});
-            });
-          }
-        });
-        if (done === configs.length)
-          fs.writeFileSync("./marketplaces/looksrare.txt", str);
-      });
-    }
-    async function pollXYEvents(configs) {
-      let done = 0;
-      let str = "";
-      configs.forEach(async (config) => {
-        const address = config.contract_address.trim();
-        const slug = config.opensea_slug.trim();
-        const urlList = `https://api.x2y2.org/v1/events?limit=200&type=list&contract=${address}`;
-        const urlSale = `https://api.x2y2.org/v1/events?limit=200&type=sale&contract=${address}`;
-        const geteventsLists = await getXYevents(urlList);
-        const geteventsSales = await getXYevents(urlSale);
-        let listings = geteventsLists.data;
-        let sales = geteventsSales.data;
-        listings.sort(function (a, b) {
-          return b.order.created_at - a.order.created_at;
-        });
-        sales.sort(function (a, b) {
-          return b.order.created_at - a.order.created_at;
-        });
-        const salesTimestamp = sales.length
-          ? sales[0].order.created_at
-          : parseInt(Date.now() / 1000);
-        const listsTimestamp = listings.length
-          ? listings[0].order.created_at
-          : parseInt(Date.now() / 1000);
-        str =
-          str +
-          [
-            address,
-            salesTimestamp,
-            listsTimestamp,
-            config.discord_id,
-            config.number,
-          ].join(",") +
-          "\n";
-        const times = fs.readFileSync("./marketplaces/x2y2.txt", {
-          encoding: "utf8",
-          flag: "r",
-        });
-        const collections = times.split("\n");
-        let timeStampLastLine = collections.find(
-          (el) =>
-            el.includes(address) &&
-            el.includes(config.discord_id) &&
-            el.includes(config.number)
-        );
-        if (!timeStampLastLine)
-          timeStampLastLine = `a,${parseInt(Date.now() / 1000)},${parseInt(
-            Date.now() / 1000
-          )},a,a`;
-        let timestampLast = timeStampLastLine.split(",");
-        const timestampLastSales = Number(timestampLast[1]);
-        const timestampLastLists = Number(timestampLast[2]);
-        ++done;
-        sales.forEach(async (sale) => {
-          const eventTimestamp = Number(sale.order.created_at);
-          if (eventTimestamp <= timestampLastSales) return;
-          const embed = await embedSalesXY(sale, slug, config.big);
-          if (!embed) return;
-          const channel = await client.guilds.cache
-            .get(config.server_id)
-            .channels.fetch(config.sale_channel);
-          const webhooks = await channel.fetchWebhooks();
-          webhooks.each((webhook) => {
-            if (webhook.id !== config.sales_webhook_id) return;
-            webhook
-              .send({
-                username: config.collection_name,
-                avatarURL: config.collection_pfp,
-                embeds: [embed],
-              })
-              .catch((e) => {});
-          });
-        });
-        listings.forEach(async (list) => {
-          const eventTimestamp = Number(list.order.created_at);
-          if (eventTimestamp <= timestampLastLists) return;
-          const embed = await embedListsXY(list, config.big);
-          if (!embed) return;
-          const channel = await client.guilds.cache
-            .get(config.server_id)
-            .channels.fetch(config.list_channel);
-          const webhooks = await channel.fetchWebhooks();
-          webhooks.each((webhook) => {
-            if (webhook.id !== config.listings_webhook_id) return;
-            webhook
-              .send({
-                username: config.collection_name,
-                avatarURL: config.collection_pfp,
-                embeds: [embed],
-              })
-              .catch((e) => {});
-          });
-        });
-        if (done === configs.length)
-          fs.writeFileSync("./marketplaces/x2y2.txt", str);
-      });
-    }
+    // function getEthCollections(configurations) {
+    //   let eth = [];
+    //   configurations.forEach((config) => {
+    //     if (config.chain !== "ETH") return;
+    //     eth.push(config);
+    //   });
+    //   pollLREvents(eth);
+    //   pollXYEvents(eth);
+    // }
+    // getEthCollections(configurations);
+    // setInterval(function () {
+    //   getEthCollections(configurations);
+    // }, 60000);
+    // async function pollLREvents(configs) {
+    //   let done = 0;
+    //   let str = "";
+    //   configs.forEach(async (config) => {
+    //     const address = config.contract_address.trim();
+    //     const slug = config.opensea_slug.trim();
+    //     const url = `https://api.looksrare.org/api/v2/events?collection=${address}&pagination[first]=150`;
+    //     const getevents = await getLRevents(url);
+    //     const events = getevents.data;
+    //     const timestampLatest = events.length
+    //       ? new Date(events[0].createdAt).getTime()
+    //       : Date.now();
+    //     str =
+    //       str +
+    //       [address, timestampLatest, config.discord_id, config.number].join(
+    //         ","
+    //       ) +
+    //       "\n";
+    //     const times = fs.readFileSync("./marketplaces/looksrare.txt", {
+    //       encoding: "utf8",
+    //       flag: "r",
+    //     });
+    //     const collections = times.split("\n");
+    //     let timeStampLastLine = collections.find(
+    //       (el) =>
+    //         el.includes(address) &&
+    //         el.includes(config.discord_id) &&
+    //         el.includes(config.number)
+    //     );
+    //     if (!timeStampLastLine) timeStampLastLine = `a,${Date.now()},a,a`;
+    //     let timestampLast = timeStampLastLine.split(",");
+    //     timestampLast = Number(timestampLast[1]);
+    //     ++done;
+    //     events.forEach(async (event) => {
+    //       const eventTimestamp = new Date(event.createdAt).getTime();
+    //       if (eventTimestamp <= timestampLast) return;
+    //       if (event.type === "SALE") {
+    //         const embed = await embedSalesLR(event, slug, config.big);
+    //         const channel = await client.guilds.cache
+    //           .get(config.server_id)
+    //           .channels.fetch(config.sale_channel);
+    //         const webhooks = await channel.fetchWebhooks();
+    //         webhooks.each((webhook) => {
+    //           if (webhook.id !== config.sales_webhook_id) return;
+    //           webhook
+    //             .send({
+    //               username: config.collection_name,
+    //               avatarURL: config.collection_pfp,
+    //               embeds: [embed],
+    //             })
+    //             .catch((e) => {});
+    //         });
+    //       } else if (event.type === "LIST") {
+    //         const embed = embedListsLR(event, config.big);
+    //         const channel = await client.guilds.cache
+    //           .get(config.server_id)
+    //           .channels.fetch(config.list_channel);
+    //         const webhooks = await channel.fetchWebhooks();
+    //         webhooks.each((webhook) => {
+    //           if (webhook.id !== config.listings_webhook_id) return;
+    //           webhook
+    //             .send({
+    //               username: config.collection_name,
+    //               avatarURL: config.collection_pfp,
+    //               embeds: [embed],
+    //             })
+    //             .catch((e) => {});
+    //         });
+    //       }
+    //     });
+    //     if (done === configs.length)
+    //       fs.writeFileSync("./marketplaces/looksrare.txt", str);
+    //   });
+    // }
+    // async function pollXYEvents(configs) {
+    //   let done = 0;
+    //   let str = "";
+    //   configs.forEach(async (config) => {
+    //     const address = config.contract_address.trim();
+    //     const slug = config.opensea_slug.trim();
+    //     const urlList = `https://api.x2y2.org/v1/events?limit=200&type=list&contract=${address}`;
+    //     const urlSale = `https://api.x2y2.org/v1/events?limit=200&type=sale&contract=${address}`;
+    //     const geteventsLists = await getXYevents(urlList);
+    //     const geteventsSales = await getXYevents(urlSale);
+    //     let listings = geteventsLists.data;
+    //     let sales = geteventsSales.data;
+    //     listings.sort(function (a, b) {
+    //       return b.order.created_at - a.order.created_at;
+    //     });
+    //     sales.sort(function (a, b) {
+    //       return b.order.created_at - a.order.created_at;
+    //     });
+    //     const salesTimestamp = sales.length
+    //       ? sales[0].order.created_at
+    //       : parseInt(Date.now() / 1000);
+    //     const listsTimestamp = listings.length
+    //       ? listings[0].order.created_at
+    //       : parseInt(Date.now() / 1000);
+    //     str =
+    //       str +
+    //       [
+    //         address,
+    //         salesTimestamp,
+    //         listsTimestamp,
+    //         config.discord_id,
+    //         config.number,
+    //       ].join(",") +
+    //       "\n";
+    //     const times = fs.readFileSync("./marketplaces/x2y2.txt", {
+    //       encoding: "utf8",
+    //       flag: "r",
+    //     });
+    //     const collections = times.split("\n");
+    //     let timeStampLastLine = collections.find(
+    //       (el) =>
+    //         el.includes(address) &&
+    //         el.includes(config.discord_id) &&
+    //         el.includes(config.number)
+    //     );
+    //     if (!timeStampLastLine)
+    //       timeStampLastLine = `a,${parseInt(Date.now() / 1000)},${parseInt(
+    //         Date.now() / 1000
+    //       )},a,a`;
+    //     let timestampLast = timeStampLastLine.split(",");
+    //     const timestampLastSales = Number(timestampLast[1]);
+    //     const timestampLastLists = Number(timestampLast[2]);
+    //     ++done;
+    //     sales.forEach(async (sale) => {
+    //       const eventTimestamp = Number(sale.order.created_at);
+    //       if (eventTimestamp <= timestampLastSales) return;
+    //       const embed = await embedSalesXY(sale, slug, config.big);
+    //       if (!embed) return;
+    //       const channel = await client.guilds.cache
+    //         .get(config.server_id)
+    //         .channels.fetch(config.sale_channel);
+    //       const webhooks = await channel.fetchWebhooks();
+    //       webhooks.each((webhook) => {
+    //         if (webhook.id !== config.sales_webhook_id) return;
+    //         webhook
+    //           .send({
+    //             username: config.collection_name,
+    //             avatarURL: config.collection_pfp,
+    //             embeds: [embed],
+    //           })
+    //           .catch((e) => {});
+    //       });
+    //     });
+    //     listings.forEach(async (list) => {
+    //       const eventTimestamp = Number(list.order.created_at);
+    //       if (eventTimestamp <= timestampLastLists) return;
+    //       const embed = await embedListsXY(list, config.big);
+    //       if (!embed) return;
+    //       const channel = await client.guilds.cache
+    //         .get(config.server_id)
+    //         .channels.fetch(config.list_channel);
+    //       const webhooks = await channel.fetchWebhooks();
+    //       webhooks.each((webhook) => {
+    //         if (webhook.id !== config.listings_webhook_id) return;
+    //         webhook
+    //           .send({
+    //             username: config.collection_name,
+    //             avatarURL: config.collection_pfp,
+    //             embeds: [embed],
+    //           })
+    //           .catch((e) => {});
+    //       });
+    //     });
+    //     if (done === configs.length)
+    //       fs.writeFileSync("./marketplaces/x2y2.txt", str);
+    //   });
+    // }
 
     /////////////////// GENERAL //////////////////
 
